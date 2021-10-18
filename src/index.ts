@@ -7,7 +7,18 @@ import mongoose from "mongoose";
 config();
 
 const COMMAND_PREFIX = "!";
-const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+const client = new Client({ 
+  intents: [
+    "GUILDS", 
+    "GUILD_MESSAGES",
+    "DIRECT_MESSAGES",
+    "GUILD_MEMBERS",
+  ],
+  partials: [
+    "CHANNEL",
+  ]
+});
+
 const commandManager = new CommandManager(COMMAND_PREFIX);
 
 commandManager.verbose = true;
