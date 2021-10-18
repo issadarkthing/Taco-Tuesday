@@ -1,0 +1,21 @@
+{
+  "name": "taco-tuesday",
+  "version": "1.0.0",
+  "description": "taco betting discord bot",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/index.js",
+    "watch": "tsc -w",
+    "dev": "nodemon dist/index.js"
+  },
+  "dependencies": {
+    "@jiman24/commandment": "^0.2.7",
+    "dotenv": "^10.0.0",
+    "random-js": "^2.1.0",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/random-js": "^2.0.0"
+  }
+}
