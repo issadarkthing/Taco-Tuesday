@@ -4,7 +4,10 @@ const userSchema = new Schema({
   userID: String,
   balance: { type: Number, default: 0 },
   price: { type: Number, default: 1000 },
-  spouse: String,
+  spouse: {
+    userID: String,
+    name: String,
+  }
 });
 
 userSchema.statics.findByUserID = function(userID: string) {
@@ -15,7 +18,10 @@ export interface UserDocument extends Document {
   userID: string;
   balance: number;
   price: number;
-  spouse?: string;
+  spouse?: {
+    userID: string;
+    name: string;
+  }
 };
 
 export interface UserModel extends Model<UserDocument> {
