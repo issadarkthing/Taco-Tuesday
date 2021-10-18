@@ -5,8 +5,12 @@ export class Player {
 
   constructor(
     private discordUser: UserDiscord, 
-    private user: UserDocument,
+    public user: UserDocument,
   ) {}
+
+  get name() {
+    return this.discordUser.username;
+  }
 
   show() {
     

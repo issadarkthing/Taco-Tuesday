@@ -1,3 +1,4 @@
+import { MersenneTwister19937, Random } from "random-js"
 
 class InvalidNumber extends Error {}
 
@@ -14,3 +15,7 @@ export function validateAmount(amount: number, balance: number) {
     throw new InsufficientBalance("insufficient balance");
   }
 }
+
+export const random = new Random(MersenneTwister19937.autoSeed());
+
+export const roll = () => random.integer(100, 500);
