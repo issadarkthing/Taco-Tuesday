@@ -18,9 +18,9 @@ export interface UserDocument extends Document {
   userID: string;
   balance: number;
   price: number;
-  spouse?: {
-    userID: string;
-    name: string;
+  spouse: {
+    userID?: string;
+    name?: string;
   }
 };
 
