@@ -2,8 +2,8 @@ import { Model, model, Schema, Document } from "mongoose";
 
 const userSchema = new Schema({
   userID: String,
-  balance: { type: Number, default: 0 },
-  price: { type: Number, default: 1000 },
+  balance: { type: Number, default: 1000 },
+  price: { type: Number, default: 5000 },
   spouse: {
     userID: String,
     name: String,
