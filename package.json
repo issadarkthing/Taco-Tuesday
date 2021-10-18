@@ -10,6 +10,9 @@
     "dev": "nodemon dist/index.js",
     "build": "tsc"
   },
+  "engines": { 
+    "node": ">=16.11.0" 
+  },
   "dependencies": {
     "@jiman24/commandment": "^0.2.7",
     "discord.js": "^13.2.0",
