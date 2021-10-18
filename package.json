@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "watch": "tsc -w",
-    "dev": "nodemon dist/index.js"
+    "dev": "nodemon dist/index.js",
+    "build": "tsc"
   },
   "dependencies": {
     "@jiman24/commandment": "^0.2.7",
