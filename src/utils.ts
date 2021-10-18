@@ -9,10 +9,13 @@ export function validateNumber(amount: number) {
 }
 
 class InsufficientBalance extends Error {}
+class ZeroAmount extends Error {}
 
 export function validateAmount(amount: number, balance: number) {
   if (amount > balance) {
     throw new InsufficientBalance("insufficient balance");
+  } else if (amount <= 0) {
+    throw new ZeroAmount("zero amount is not allowed");
   }
 }
 

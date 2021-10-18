@@ -16,10 +16,6 @@ export default class Gamble extends Command {
       const player = await Player.fromUser(msg.author);
       const amount = parseInt(args[0]);
 
-      if (amount <= 0) {
-        throw new Error("cannot bet with 0 :taco: and below");
-      }
-
       validateNumber(amount);
       validateAmount(amount, player.user.balance);
 
@@ -41,7 +37,7 @@ export default class Gamble extends Command {
 
       } else {
 
-        jackpot.amount += amount;
+        jackpot.amount = amount;
         player.user.balance -= amount;
 
         await msg.channel.send(`They lost ${amount} :taco:`);
