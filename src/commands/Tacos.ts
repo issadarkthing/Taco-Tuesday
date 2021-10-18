@@ -4,6 +4,7 @@ import { Player } from "../structure/Player";
 
 export default class Tacos extends Command {
   name = "tacos";
+  description = "show tacos";
 
   async exec(msg: Message) {
 

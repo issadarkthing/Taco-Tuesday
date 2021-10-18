@@ -8,6 +8,7 @@ import { roll } from "../utils";
 export default class Gamble extends Command {
   name = "gamble";
   aliases = ["g"];
+  description = "gamble your tacos";
 
   async exec(msg: Message, args: string[]) {
 

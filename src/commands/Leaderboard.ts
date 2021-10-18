@@ -6,6 +6,7 @@ import { Player } from "../structure/Player";
 export default class Leaderboard extends Command {
   name = "leaderboard";
   aliases = ["l", "lb"];
+  description = "leaderboard of tuesday tacos players";
 
   async exec(msg: Message) {
 

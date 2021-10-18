@@ -5,6 +5,7 @@ import { validateAmount, validateNumber } from "../utils";
 
 export default class Give extends Command {
   name = "give";
+  description = "give tacos to other player";
 
   async exec(msg: Message, args: string[]) {
 

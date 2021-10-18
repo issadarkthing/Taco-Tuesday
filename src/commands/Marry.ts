@@ -4,6 +4,7 @@ import { Player } from "../structure/Player";
 
 export default class Marry extends Command {
   name = "marry";
+  description = "pay a price and marry a player";
 
   async exec(msg: Message) {
 

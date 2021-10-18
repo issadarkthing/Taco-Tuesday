@@ -19,7 +19,7 @@ const client = new Client({
   ]
 });
 
-const commandManager = new CommandManager(COMMAND_PREFIX);
+export const commandManager = new CommandManager(COMMAND_PREFIX);
 
 commandManager.verbose = true;
 commandManager.registerCommands(path.resolve(__dirname, "./commands"));

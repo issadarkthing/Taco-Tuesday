@@ -5,6 +5,7 @@ import { Player } from "../structure/Player";
 export default class Profile extends Command {
   name = "profile";
   aliases = ["p"];
+  description = "show player's profile";
 
   async exec(msg: Message) {
 
