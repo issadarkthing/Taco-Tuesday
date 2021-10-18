@@ -2,6 +2,7 @@ import { Client } from "discord.js";
 import { CommandManager } from "@jiman24/commandment";
 import path from "path";
 import { config } from "dotenv";
+import mongoose from "mongoose";
 
 config();
 
@@ -25,3 +26,5 @@ client.on("ready", () => console.log(client.user?.username, "is ready!"))
 client.on("messageCreate", msg => commandManager.handleMessage(msg));
 
 client.login(process.env.BOT_TOKEN);
+mongoose.connect(process.env.DB_URI!)
+  .then(() => console.log("connected to db!"));

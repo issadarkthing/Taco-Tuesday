@@ -12,6 +12,7 @@
   "dependencies": {
     "@jiman24/commandment": "^0.2.7",
     "dotenv": "^10.0.0",
+    "mongoose": "^6.0.11",
     "random-js": "^2.1.0",
     "typescript": "^4.4.4"
   },
