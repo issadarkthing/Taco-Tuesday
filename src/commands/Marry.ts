@@ -26,7 +26,11 @@ export default class Marry extends Command {
 
       if (mentionedPlayer.user.spouse.userID !== undefined) {
         throw new Error(`${mentionedPlayer.name} is already married`);
+
+      } else if (mentionedPlayer.user.userID === player.user.userID) {
+        throw new Error(`You cannot marry yourself`);
       }
+
 
       player.user.balance -= mentionedPlayer.user.price;
       player.user.spouse.userID = mentionedPlayer.user.userID;
