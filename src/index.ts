@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 config();
 
-const COMMAND_PREFIX = "!";
+const COMMAND_PREFIX = "!" || process.env.PREFIX;
 const client = new Client({ 
   intents: [
     "GUILDS", 
