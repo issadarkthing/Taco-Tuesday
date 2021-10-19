@@ -14,6 +14,18 @@ export default class Gamble extends Command {
     return rolled >= 95 && rolled <= 100
   }
 
+  private getResult(rolled: number) {
+    if (rolled >= 1 && rolled <= 65) {
+      return "lose" as const;
+
+    } else if (rolled >= 66 && rolled <= 94) {
+      return "win" as const;
+
+    } else {
+      return "jackpot" as const;
+    }
+  }
+
   async exec(msg: Message, args: string[]) {
 
     try {
@@ -29,25 +41,32 @@ export default class Gamble extends Command {
       await msg.channel.send(`${player.name} rolled ${rolled}`);
 
       const jackpot = await Jackpot.getMain();
+      const result = this.getResult(rolled);
 
-      if (this.isWin(rolled)) {
-
-        player.user.balance += amount;
-
-        await msg.channel.send(
-          `${player.name} WON THE JACKPOT, THEY GOT ${jackpot.amount}:taco:!!!`
-        )
-
-        jackpot.amount = amount;
-
-      } else {
+      if (result === "lose") {
 
         jackpot.amount += amount;
         player.user.balance -= amount;
 
         await msg.channel.send(`They lost ${amount} :taco:`);
         await msg.channel.send(`Jackpot now at ${jackpot.amount} :taco:`);
+
+      } else if (result === "win") {
+
+        player.user.balance += amount;
+        await msg.channel.send(`They win ${amount} :taco:`);
+
+      } else if (result === "jackpot") {
+
+        player.user.balance += jackpot.amount;
+
+        await msg.channel.send(
+          `${player.name} WON THE JACKPOT, THEY GOT ${jackpot.amount}:taco:!!!`
+        )
+
+        jackpot.amount = amount;
       }
+
 
       jackpot.save();
       player.user.save();
