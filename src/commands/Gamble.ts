@@ -11,7 +11,7 @@ export default class Gamble extends Command {
   description = "gamble your tacos";
 
   private isWin(rolled: number) {
-    return rolled >= 55 && rolled <= 100
+    return rolled >= 95 && rolled <= 100
   }
 
   async exec(msg: Message, args: string[]) {
