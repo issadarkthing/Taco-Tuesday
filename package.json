@@ -10,8 +10,8 @@
     "dev": "nodemon dist/index.js",
     "build": "tsc"
   },
-  "engines": { 
-    "node": ">=16.11.0" 
+  "engines": {
+    "node": ">=16.11.0"
   },
   "dependencies": {
     "@jiman24/commandment": "^0.2.7",
@@ -22,6 +22,7 @@
     "typescript": "^4.4.4"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.11.97",
     "@types/random-js": "^2.0.0"
   }
 }
