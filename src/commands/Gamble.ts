@@ -33,12 +33,12 @@ export default class Gamble extends Command {
           `${player.name} WON THE JACKPOT, THEY GOT ${jackpot.amount}:taco:!!!`
         )
       
-        jackpot.amount += amount;
+        jackpot.amount = amount;
         jackpot.winningNumber = roll();
 
       } else {
 
-        jackpot.amount = amount;
+        jackpot.amount += amount;
         player.user.balance -= amount;
 
         await msg.channel.send(`They lost ${amount} :taco:`);
