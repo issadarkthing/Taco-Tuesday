@@ -33,9 +33,12 @@ export default class Gamble extends Command {
       if (this.isWin(rolled)) {
 
         player.user.balance += amount;
+
         await msg.channel.send(
           `${player.name} WON THE JACKPOT, THEY GOT ${jackpot.amount}:taco:!!!`
         )
+
+        jackpot.amount = amount;
 
       } else {
 
