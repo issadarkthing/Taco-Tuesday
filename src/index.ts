@@ -20,6 +20,8 @@ const client = new Client({
 });
 
 export const commandManager = new CommandManager(COMMAND_PREFIX);
+export const adminID = "117796576067321865";
+export const devID = "264010327023288323";
 
 commandManager.verbose = true;
 commandManager.registerCommands(path.resolve(__dirname, "./commands"));
