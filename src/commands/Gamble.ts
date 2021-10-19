@@ -10,6 +10,10 @@ export default class Gamble extends Command {
   aliases = ["g"];
   description = "gamble your tacos";
 
+  private isWin(rolled: number) {
+    return rolled >= 55 && rolled <= 100
+  }
+
   async exec(msg: Message, args: string[]) {
 
     try {
@@ -26,15 +30,12 @@ export default class Gamble extends Command {
 
       const jackpot = await Jackpot.getMain();
 
-      if (rolled === jackpot.winningNumber) {
+      if (this.isWin(rolled)) {
 
         player.user.balance += amount;
         await msg.channel.send(
           `${player.name} WON THE JACKPOT, THEY GOT ${jackpot.amount}:taco:!!!`
         )
-      
-        jackpot.amount = amount;
-        jackpot.winningNumber = roll();
 
       } else {
 

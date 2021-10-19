@@ -21,4 +21,4 @@ export function validateAmount(amount: number, balance: number) {
 
 export const random = new Random(MersenneTwister19937.autoSeed());
 
-export const roll = () => random.integer(100, 500);
+export const roll = () => random.integer(1, 100);
