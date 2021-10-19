@@ -29,6 +29,9 @@ export default class Marry extends Command {
 
       } else if (mentionedPlayer.user.userID === player.user.userID) {
         throw new Error(`You cannot marry yourself`);
+
+      } else if (player.user.balance < mentionedPlayer.user.price) {
+        throw new Error(`Insufficient balance`);
       }
 
 
