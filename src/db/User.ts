@@ -1,4 +1,5 @@
 import { Model, model, Schema, Document } from "mongoose";
+import { DateTime } from "luxon";
 
 const userSchema = new Schema({
   userID: String,
@@ -7,7 +8,17 @@ const userSchema = new Schema({
   spouse: {
     userID: String,
     name: String,
-  }
+  },
+  lastClaim: {
+    daily: { 
+      type: Date,
+      default: () => DateTime.local(2017, 1, 1).toJSDate(),
+    },
+    weekly: {
+      type: Date,
+      default: () => DateTime.local(2017, 1, 1).toJSDate(),
+    },
+  },
 });
 
 userSchema.statics.findByUserID = function(userID: string) {
@@ -21,7 +32,11 @@ export interface UserDocument extends Document {
   spouse: {
     userID?: string;
     name?: string;
-  }
+  },
+  lastClaim: {
+    daily: Date;
+    weekly: Date;
+  },
 };
 
 export interface UserModel extends Model<UserDocument> {
