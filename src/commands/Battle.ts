@@ -30,7 +30,11 @@ export default class Battle extends Command {
         throw new Error(`${opponent.name} has insufficient balance`);
       }
 
-      player.user.balance -= amount;
+      const battleTax = Math.round(amount * 0.2);
+
+      msg.channel.send(`${battleTax} :taco: is taken from ${player.name}`);
+
+      player.user.balance -= amount + battleTax;
       opponent.user.balance -= amount;
 
       const [winner, loser] = random.shuffle([player, opponent]);
