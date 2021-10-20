@@ -18,6 +18,7 @@ export class Player {
       .setColor("RANDOM")
       .setThumbnail(this.discordUser.displayAvatarURL())
       .addField("Balance", `${this.user.balance} :taco:`, true)
+      .addField("Bank", `${this.user.bank} :taco:`, true)
       .addField("Price to marry", `${this.user.price} :taco:`, true)
       .addField("Spouse name", `${this.user.spouse?.name || "none"}`, true)
 

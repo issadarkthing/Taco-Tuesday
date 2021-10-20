@@ -19,6 +19,7 @@ const userSchema = new Schema({
       default: () => DateTime.local(2017, 1, 1).toJSDate(),
     },
   },
+  bank: { type: Number, default: 0 },
 });
 
 userSchema.statics.findByUserID = function(userID: string) {
@@ -32,11 +33,12 @@ export interface UserDocument extends Document {
   spouse: {
     userID?: string;
     name?: string;
-  },
+  };
   lastClaim: {
     daily: Date;
     weekly: Date;
-  },
+  };
+  bank: number;
 };
 
 export interface UserModel extends Model<UserDocument> {
