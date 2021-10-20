@@ -10,15 +10,11 @@ export default class Gamble extends Command {
   aliases = ["g"];
   description = "gamble your tacos";
 
-  private isWin(rolled: number) {
-    return rolled >= 95 && rolled <= 100
-  }
-
   private getResult(rolled: number) {
     if (rolled >= 1 && rolled <= 65) {
       return "lose" as const;
 
-    } else if (rolled >= 66 && rolled <= 94) {
+    } else if (rolled >= 66 && rolled <= 97) {
       return "win" as const;
 
     } else {
