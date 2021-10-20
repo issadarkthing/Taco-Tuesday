@@ -34,14 +34,17 @@ export default class Marry extends Command {
         throw new Error(`Insufficient balance`);
       }
 
+      const totalBank = player.user.bank + mentionedPlayer.user.bank;
 
       player.user.balance -= mentionedPlayer.user.price;
       player.user.spouse.userID = mentionedPlayer.user.userID;
       player.user.spouse.name = mentionedPlayer.name;
+      player.user.bank = totalBank;
 
       mentionedPlayer.user.balance += mentionedPlayer.user.price;
       mentionedPlayer.user.spouse.userID = player.user.userID;
       mentionedPlayer.user.spouse.name = player.name;
+      mentionedPlayer.user.bank = totalBank;
 
       player.user.save();
       mentionedPlayer.user.save();

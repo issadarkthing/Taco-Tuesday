@@ -23,11 +23,15 @@ export default class Divorce extends Command {
         throw new Error(`you are not married to ${recipient.name}`);
       }
 
+      const totalBank = Math.round(player.user.bank / 2);
+
       player.user.spouse.userID = undefined;
       player.user.spouse.name = undefined;
+      player.user.bank = totalBank;
 
       recipient.user.spouse.userID = undefined;
       recipient.user.spouse.name = undefined;
+      recipient.user.bank = totalBank;
 
       player.user.save();
       recipient.user.save();
