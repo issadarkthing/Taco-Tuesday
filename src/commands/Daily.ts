@@ -5,6 +5,7 @@ import { DateTime } from "luxon";
 
 export default class extends Command {
   name = "daily";
+  description = "claim daily taco";
   reward = 200;
 
   async exec(msg: Message) {
