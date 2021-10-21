@@ -27,4 +27,5 @@ export interface JackpotModel extends Model<JackpotDocument> {
   getMain(): Promise<JackpotDocument>;
 };
 
-export const Jackpot = model<JackpotDocument>("Jackpot", jackpotSchema) as JackpotModel;
+export const Jackpot = 
+  model<JackpotDocument>("Jackpot", jackpotSchema) as JackpotModel;

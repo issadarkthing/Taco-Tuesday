@@ -22,3 +22,9 @@ export function validateAmount(amount: number, balance: number) {
 export const random = new Random(MersenneTwister19937.autoSeed());
 
 export const roll = () => random.integer(1, 100);
+
+export function sleep(time: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time);
+  })
+}
