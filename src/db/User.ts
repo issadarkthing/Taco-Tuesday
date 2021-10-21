@@ -20,6 +20,13 @@ const userSchema = new Schema({
     },
   },
   bank: { type: Number, default: 0 },
+  cooldowns: {
+    battle: {
+      count: { type: Number, default: 0 },
+      // most recent time the command was called
+      time: { type: Date, default: () => DateTime.local(2017) },
+    }
+  },
 });
 
 userSchema.statics.findByUserID = function(userID: string) {
@@ -39,6 +46,12 @@ export interface UserDocument extends Document {
     weekly: Date;
   };
   bank: number;
+  cooldowns: {
+    battle: {
+      count: number;
+      time: Date;
+    }
+  };
 };
 
 export interface UserModel extends Model<UserDocument> {

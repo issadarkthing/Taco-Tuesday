@@ -3,10 +3,13 @@ import { Message } from "discord.js";
 import { Player } from "../structure/Player";
 import { validateAmount, validateNumber } from "../utils";
 import { random } from "../utils";
+import { DateTime } from "luxon";
 
 export default class Battle extends Command {
   name = "battle";
   description = "battle with other person to win taco";
+  maxCount = 5;
+  cooldownTime = 3; // hours
 
   async exec(msg: Message, args: string[]) {
 
@@ -29,6 +32,25 @@ export default class Battle extends Command {
       if (opponent.user.balance < amount) {
         throw new Error(`${opponent.name} has insufficient balance`);
       }
+
+      const lastTime = DateTime.fromJSDate(player.user.cooldowns.battle.time);
+      const { count } = player.user.cooldowns.battle;
+      const diff = Math.abs(lastTime.diffNow(["hours"]).hours);
+
+      if (diff < this.cooldownTime && count >= this.maxCount) {
+
+        throw new Error("you are on cooldown");
+
+      }
+
+      if (player.user.cooldowns.battle.count >= this.maxCount) {
+        player.user.cooldowns.battle.count = 0;
+      }
+
+      player.user.cooldowns.battle.time = DateTime.now().toJSDate();
+      player.user.cooldowns.battle.count += 1;
+
+      await player.user.save();
 
       const battleTax = Math.round(amount * 0.2);
 
