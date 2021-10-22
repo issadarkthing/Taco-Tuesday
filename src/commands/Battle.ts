@@ -9,7 +9,7 @@ export default class Battle extends Command {
   name = "battle";
   description = "battle with other person to win taco";
   maxCount = 5;
-  cooldownTime = 3; // hours
+  cooldownTime = 1; // hours
 
   async exec(msg: Message, args: string[]) {
 
