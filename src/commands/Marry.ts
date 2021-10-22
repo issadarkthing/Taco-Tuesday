@@ -1,6 +1,8 @@
 import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
 import { Player } from "../structure/Player";
+import { ReactionCollector } from "discord-collector";
+import { oneLine } from "common-tags";
 
 export default class Marry extends Command {
   name = "marry";
@@ -32,6 +34,23 @@ export default class Marry extends Command {
 
       } else if (player.user.balance < mentionedPlayer.user.price) {
         throw new Error(`Insufficient balance`);
+      }
+
+      const botMessage = await msg.channel.send(
+        oneLine`${player.name} is proposing to mary ${mentionedUser}. Do you
+        want to accept or reject?`
+      );
+
+      const confirmation = await ReactionCollector.yesNoQuestion(
+        { botMessage, user: mentionedUser }
+      );
+
+      if (confirmation) {
+        msg.channel.send(`${mentionedPlayer.name} approved to marry`);
+
+      } else {
+        throw new Error(`${mentionedPlayer.name} rejected to marry`);
+
       }
 
       const totalBank = player.user.bank + mentionedPlayer.user.bank;

@@ -12,10 +12,13 @@ const client = new Client({
     "GUILDS", 
     "GUILD_MESSAGES",
     "DIRECT_MESSAGES",
+    "GUILD_MESSAGE_REACTIONS",
     "GUILD_MEMBERS",
   ],
   partials: [
     "CHANNEL",
+    "GUILD_MEMBER",
+    "REACTION",
   ]
 });
 

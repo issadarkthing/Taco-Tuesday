@@ -1,5 +1,8 @@
 import { MersenneTwister19937, Random } from "random-js"
 
+
+export const BLUE_BUTTON = "🔵";
+
 class InvalidNumber extends Error {}
 
 export function validateNumber(amount: number) {

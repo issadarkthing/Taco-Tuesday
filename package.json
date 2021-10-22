@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@jiman24/commandment": "^0.2.7",
+    "common-tags": "^1.8.0",
+    "discord-collector": "^1.11.8",
     "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
     "luxon": "^2.0.2",
@@ -23,6 +25,7 @@
     "typescript": "^4.4.4"
   },
   "devDependencies": {
+    "@types/common-tags": "^1.8.1",
     "@types/luxon": "^2.0.5",
     "@types/mongoose": "^5.11.97",
     "@types/random-js": "^2.0.0"
