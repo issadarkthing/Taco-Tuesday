@@ -49,8 +49,9 @@ export default class Gamble extends Command {
 
       } else if (result === "win") {
 
-        player.user.balance += amount;
-        await msg.channel.send(`They win ${amount} :taco:`);
+        const winAmount = amount * 2;
+        player.user.balance += winAmount;
+        await msg.channel.send(`They win ${winAmount} :taco:`);
 
       } else if (result === "jackpot") {
 
