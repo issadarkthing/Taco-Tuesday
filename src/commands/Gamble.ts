@@ -26,7 +26,11 @@ export default class Gamble extends Command {
 
     try {
 
-      const player = await Player.fromUser(msg.author);
+      const [player, jackpot] = await Promise.all([
+        Player.fromUser(msg.author),
+        await Jackpot.getMain(),
+      ]);
+
       const amount = parseInt(args[0]);
 
       validateNumber(amount);
@@ -34,9 +38,8 @@ export default class Gamble extends Command {
 
       const rolled = roll();
 
-      await msg.channel.send(`${player.name} rolled ${rolled}`);
+      msg.channel.send(`${player.name} rolled ${rolled}`);
 
-      const jackpot = await Jackpot.getMain();
       const result = this.getResult(rolled);
 
       if (result === "lose") {
@@ -44,20 +47,20 @@ export default class Gamble extends Command {
         jackpot.amount += amount;
         player.user.balance -= amount;
 
-        await msg.channel.send(`They lost ${amount} :taco:`);
-        await msg.channel.send(`Jackpot now at ${jackpot.amount} :taco:`);
+        msg.channel.send(`They lost ${amount} :taco:`);
+        msg.channel.send(`Jackpot now at ${jackpot.amount} :taco:`);
 
       } else if (result === "win") {
 
         const winAmount = amount * 2;
         player.user.balance += winAmount;
-        await msg.channel.send(`They win ${winAmount} :taco:`);
+        msg.channel.send(`They win ${winAmount} :taco:`);
 
       } else if (result === "jackpot") {
 
         player.user.balance += jackpot.amount;
 
-        await msg.channel.send(
+        msg.channel.send(
           `${player.name} WON THE JACKPOT, THEY GOT ${jackpot.amount}:taco:!!!`
         )
 
