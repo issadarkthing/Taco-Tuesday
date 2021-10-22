@@ -3,6 +3,9 @@ import { CommandManager } from "@jiman24/commandment";
 import path from "path";
 import { config } from "dotenv";
 import mongoose from "mongoose";
+import { Duration } from "luxon";
+import { Jackpot } from "./db/Jackpot";
+import { random } from "./utils";
 
 config();
 
@@ -43,4 +46,16 @@ client.on("messageCreate", msg => commandManager.handleMessage(msg));
 
 client.login(process.env.BOT_TOKEN);
 mongoose.connect(process.env.DB_URI!)
-  .then(() => console.log("connected to db!"));
+  .then(() => { 
+
+    console.log("connected to db!");
+
+    setInterval(async () => {
+
+      const jackpot = await Jackpot.getMain();
+      jackpot.amount = random.integer(100, 10_000);
+      await jackpot.save();
+
+    }, Duration.fromObject({ minutes: 1 }).as("milliseconds"));
+
+  });
