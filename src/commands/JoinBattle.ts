@@ -5,6 +5,7 @@ import { BattleRoyale } from "../db/BattleRoyale";
 export default class extends Command {
   name = "join-battle";
   description = "join Battle Royale event";
+  disable = true;
 
   async exec(msg: Message) {
 

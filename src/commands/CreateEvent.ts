@@ -7,6 +7,7 @@ import { validateNumber } from "../utils";
 export default class extends Command {
   name = "create-event";
   description = "creates Battle Royale event";
+  disable = true;
 
   async exec(msg: Message, args: string[]) {
 

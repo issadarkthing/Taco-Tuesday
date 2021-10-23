@@ -8,6 +8,7 @@ import { adminID, devID } from "../index";
 export default class extends Command {
   name = "start-event";
   description = "start Battle Royale event"
+  disable = true;
 
   async exec(msg: Message) {
 

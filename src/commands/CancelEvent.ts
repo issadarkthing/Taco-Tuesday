@@ -6,6 +6,7 @@ import { adminID, devID } from "../index";
 export default class extends Command {
   name = "cancel-event";
   description = "cancel Battle Royale event";
+  disable = true;
 
   async exec(msg: Message) {
 
