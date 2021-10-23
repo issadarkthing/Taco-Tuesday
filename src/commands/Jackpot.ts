@@ -5,6 +5,7 @@ import { Jackpot } from "../db/Jackpot";
 export default class extends Command {
   name = "jackpot";
   description = "show current jackpot";
+  disable = true;
 
   async exec(msg: Message) {
 

@@ -9,6 +9,7 @@ export default class Gamble extends Command {
   name = "gamble";
   aliases = ["g"];
   description = "gamble your tacos";
+  disable = true;
 
   private getResult(rolled: number) {
     if (rolled >= 1 && rolled <= 65) {
