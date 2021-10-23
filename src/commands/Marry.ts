@@ -7,6 +7,7 @@ import { oneLine } from "common-tags";
 export default class Marry extends Command {
   name = "marry";
   description = "pay a price and marry a player";
+  disable = true;
 
   async exec(msg: Message) {
 

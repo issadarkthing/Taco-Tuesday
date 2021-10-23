@@ -5,6 +5,7 @@ import { Player } from "../structure/Player";
 export default class Divorce extends Command {
   name = "divorce";
   description = "divorce your spouse";
+  disable = true;
 
   async exec(msg: Message) {
 

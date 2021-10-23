@@ -6,6 +6,7 @@ import { validateAmount, validateNumber } from "../utils";
 export default class Price extends Command {
   name = "price";
   description = "sets a price for yourself when someone wants to marry you";
+  disable = true;
 
   async exec(msg: Message, args: string[]) {
 
