@@ -23,6 +23,11 @@ export abstract class BaseArmor extends Armor {
       return;
     }
 
+    if (player.doc.armors.some(x => x.id === this.id)) {
+      msg.channel.send("You already own this item");
+      return;
+    }
+
     player.doc.balance -= this.price;
     player.doc.armors.push(this);
 
