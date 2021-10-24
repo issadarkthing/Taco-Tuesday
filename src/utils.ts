@@ -3,6 +3,11 @@ import { MersenneTwister19937, Random } from "random-js"
 export const currency = ":taco:";
 export const BLUE_BUTTON = "🔵";
 
+export function toNList(items: string[], start = 1) {
+  if (items.length < 0) return "none";
+  return items.map((x, i) => `${i + start}. ${x}`).join("\n");
+}
+
 class InvalidNumber extends Error {}
 
 export function validateNumber(amount: number) {
