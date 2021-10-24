@@ -23,13 +23,16 @@ export abstract class BaseArmor extends Armor {
       return;
     }
 
-    if (player.doc.armors.some(x => x.id === this.id)) {
+    if (
+      player.inventory.some(x => x.id === this.id) ||
+      player.armors.some(x => x.id === this.id)
+    ) {
       msg.channel.send("You already own this item");
       return;
     }
 
     player.doc.balance -= this.price;
-    player.doc.armors.push(this);
+    player.doc.armors.push(this.id);
 
     await player.doc.save();
     msg.channel.send(`Successfully bought **${this.name}**`);

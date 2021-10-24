@@ -2,6 +2,7 @@ import { UserDocument, User } from "../db/User";
 import { User as UserDiscord } from "discord.js";
 import { Player as BasePlayer } from "discordjs-rpg";
 import { currency } from "../utils";
+import { BaseArmor } from "./Armor";
 
 export class Player extends BasePlayer {
   doc: UserDocument;
@@ -10,7 +11,17 @@ export class Player extends BasePlayer {
     super(discordUser);
     this.doc = doc;
 
-    this.doc.equippedArmors.forEach(armor => this.equipArmor(armor));
+    this.armors.forEach(armor => this.equipArmor(armor));
+  }
+
+  get armors() {
+    return this.doc.equippedArmors
+      .map(armorID => BaseArmor.all.find(x => x.id === armorID)!);
+  }
+
+  get armorInventory() {
+    return this.doc.armors
+      .map(armorID => BaseArmor.all.find(x => x.id === armorID)!);
   }
 
   show() {
@@ -27,6 +38,12 @@ export class Player extends BasePlayer {
     profile.addField("Armor", armor);
 
     return profile;
+  }
+
+  get inventory() {
+    return [
+      ...this.armorInventory,
+    ];
   }
 
   static async fromUser(user: UserDiscord) {

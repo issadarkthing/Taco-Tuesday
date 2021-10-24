@@ -1,22 +1,47 @@
 import { Command } from "@jiman24/commandment";
 import { Message, MessageEmbed } from "discord.js";
 import { Player } from "../structure/Player";
-import { toNList } from "../utils";
+import { toNList, validateNumber } from "../utils";
 
 export default class extends Command {
   name = "inventory";
-  aliases = ["i"];
+  aliases = ["i", "inv"];
 
-  async exec(msg: Message) {
+  async exec(msg: Message, args: string[]) {
 
-    const player = await Player.fromUser(msg.author);
-    const inventoryList = toNList(player.doc.armors.map(x => x.name));
+    try {
 
-    const embed = new MessageEmbed()
-      .setColor("RANDOM")
-      .setTitle("Inventory")
-      .setDescription(inventoryList);
+      const player = await Player.fromUser(msg.author);
+      const [arg1] = args;
 
-    msg.channel.send({ embeds: [embed] });
+      if (arg1) {
+
+        const index = parseInt(arg1) - 1;
+
+        validateNumber(index);
+
+        const item = player.inventory[index];
+
+        if (!item) {
+          throw new Error("cannot find item");
+        }
+
+        msg.channel.send({ embeds: [item.show()] });
+
+        return;
+      }
+
+      const inventoryList = toNList(player.inventory.map(x => x.name));
+
+      const embed = new MessageEmbed()
+        .setColor("RANDOM")
+        .setTitle("Inventory")
+        .setDescription(inventoryList);
+
+      msg.channel.send({ embeds: [embed] });
+
+    } catch (err) {
+      msg.channel.send((err as Error).message);
+    }
   }
 }

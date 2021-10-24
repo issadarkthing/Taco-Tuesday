@@ -1,13 +1,12 @@
-import { Model, model, Schema, Document } from "mongoose";
+import mongoose, { Model, Document } from "mongoose";
 import { DateTime } from "luxon";
-import { BaseArmor } from "../structure/Armor";
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
   userID: String,
   balance: { type: Number, default: 1000 },
   price: { type: Number, default: 5000 },
-  armors: [],
-  equippedArmors: [],
+  armors: [String],
+  equippedArmors: [String],
   spouse: {
     userID: String,
     name: String,
@@ -40,8 +39,8 @@ export interface UserDocument extends Document {
   userID: string;
   balance: number;
   price: number;
-  armors: BaseArmor[];
-  equippedArmors: BaseArmor[];
+  armors: string[];
+  equippedArmors: string[];
   spouse: {
     userID?: string;
     name?: string;
@@ -63,4 +62,4 @@ export interface UserModel extends Model<UserDocument> {
   findByUserID(userID: string): Promise<UserDocument>;
 };
 
-export const User = model<UserDocument>("User", userSchema) as UserModel;
+export const User = mongoose.model<UserDocument>("User", userSchema) as UserModel;
