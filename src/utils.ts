@@ -1,6 +1,6 @@
 import { MersenneTwister19937, Random } from "random-js"
 
-
+export const currency = ":taco:";
 export const BLUE_BUTTON = "🔵";
 
 class InvalidNumber extends Error {}
