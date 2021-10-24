@@ -15,8 +15,8 @@ export default class Marry extends Command {
 
       const player = await Player.fromUser(msg.author);
 
-      if (player.user.spouse.userID !== undefined) {
-        throw new Error(`you already married to ${player.user.spouse.name}!`);
+      if (player.doc.spouse.userID !== undefined) {
+        throw new Error(`you already married to ${player.doc.spouse.name}!`);
       }
 
       const mentionedUser = msg.mentions.users.first();
@@ -27,13 +27,13 @@ export default class Marry extends Command {
 
       const mentionedPlayer = await Player.fromUser(mentionedUser);
 
-      if (mentionedPlayer.user.spouse.userID !== undefined) {
+      if (mentionedPlayer.doc.spouse.userID !== undefined) {
         throw new Error(`${mentionedPlayer.name} is already married`);
 
-      } else if (mentionedPlayer.user.userID === player.user.userID) {
+      } else if (mentionedPlayer.doc.userID === player.doc.userID) {
         throw new Error(`You cannot marry yourself`);
 
-      } else if (player.user.balance < mentionedPlayer.user.price) {
+      } else if (player.doc.balance < mentionedPlayer.doc.price) {
         throw new Error(`Insufficient balance`);
       }
 
@@ -54,20 +54,20 @@ export default class Marry extends Command {
 
       }
 
-      const totalBank = player.user.bank + mentionedPlayer.user.bank;
+      const totalBank = player.doc.bank + mentionedPlayer.doc.bank;
 
-      player.user.balance -= mentionedPlayer.user.price;
-      player.user.spouse.userID = mentionedPlayer.user.userID;
-      player.user.spouse.name = mentionedPlayer.name;
-      player.user.bank = totalBank;
+      player.doc.balance -= mentionedPlayer.doc.price;
+      player.doc.spouse.userID = mentionedPlayer.doc.userID;
+      player.doc.spouse.name = mentionedPlayer.name;
+      player.doc.bank = totalBank;
 
-      mentionedPlayer.user.balance += mentionedPlayer.user.price;
-      mentionedPlayer.user.spouse.userID = player.user.userID;
-      mentionedPlayer.user.spouse.name = player.name;
-      mentionedPlayer.user.bank = totalBank;
+      mentionedPlayer.doc.balance += mentionedPlayer.doc.price;
+      mentionedPlayer.doc.spouse.userID = player.doc.userID;
+      mentionedPlayer.doc.spouse.name = player.name;
+      mentionedPlayer.doc.bank = totalBank;
 
-      player.user.save();
-      mentionedPlayer.user.save();
+      player.doc.save();
+      mentionedPlayer.doc.save();
 
       msg.channel.send(`Successfully married to ${mentionedPlayer.name}!`);
 

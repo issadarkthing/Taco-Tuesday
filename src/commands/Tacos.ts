@@ -14,13 +14,13 @@ export default class Tacos extends Command {
 
       const mentionedPlayer = await Player.fromUser(mentionedUser);
       msg.channel.send(
-        `${mentionedPlayer.name} has ${mentionedPlayer.user.balance} :taco:`
+        `${mentionedPlayer.name} has ${mentionedPlayer.doc.balance} :taco:`
       );
 
       return;
     }
 
     const player = await Player.fromUser(msg.author);
-    msg.channel.send(`${player.name} has ${player.user.balance} :taco:`);
+    msg.channel.send(`${player.name} has ${player.doc.balance} :taco:`);
   }
 }

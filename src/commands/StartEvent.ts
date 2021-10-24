@@ -44,7 +44,7 @@ export default class extends Command {
       const user = await msg.client.users.fetch(winner);
       const player = await Player.fromUser(user);
 
-      player.user.balance += battleRoyale.prize;
+      player.doc.balance += battleRoyale.prize;
 
       await msg.channel.send(`${player.name} wins Battle Royale!`);
       await msg.channel.send(`${player.name} earns ${battleRoyale.prize} :taco:`);

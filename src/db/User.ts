@@ -1,10 +1,12 @@
 import { Model, model, Schema, Document } from "mongoose";
 import { DateTime } from "luxon";
+import { BaseArmor } from "../structure/Armor";
 
 const userSchema = new Schema({
   userID: String,
   balance: { type: Number, default: 1000 },
   price: { type: Number, default: 5000 },
+  armors: [],
   spouse: {
     userID: String,
     name: String,
@@ -37,6 +39,7 @@ export interface UserDocument extends Document {
   userID: string;
   balance: number;
   price: number;
+  armors: BaseArmor[];
   spouse: {
     userID?: string;
     name?: string;

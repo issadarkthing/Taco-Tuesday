@@ -297,6 +297,17 @@ discord.js@^13.1.0, discord.js@^13.2.0:
     node-fetch "^2.6.1"
     ws "^8.2.3"
 
+discordjs-rpg@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/discordjs-rpg/-/discordjs-rpg-2.0.0.tgz#6c8bb454ae185079de58e6b9d5fec334df01396f"
+  integrity sha512-Ot0LMs1oRpQwShSDJt5pf1QsB4d9yhJb5K6b+iaOaDUOaPnxGAdpbm3K3Ixp91QXpebQc+e3QE4bL5yiAsrAPA==
+  dependencies:
+    common-tags "^1.8.0"
+    discord.js "^13.1.0"
+    dotenv "^10.0.0"
+    lodash.clonedeep "^4.5.0"
+    random-js "^2.1.0"
+
 dot-prop@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-6.0.1.tgz#fc26b3cf142b9e59b74dbd39ed66ce620c681083"
@@ -355,6 +366,11 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
 lodash.isequal@^4.5.0:
   version "4.5.0"

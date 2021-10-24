@@ -16,11 +16,11 @@ export default class Price extends Command {
       const amount = parseInt(args[0]);
 
       validateNumber(amount);
-      validateAmount(amount, player.user.balance);
+      validateAmount(amount, player.doc.balance);
 
-      player.user.price = amount;
+      player.doc.price = amount;
 
-      await player.user.save();
+      await player.doc.save();
 
       msg.channel.send(`successfully set ${amount} :taco: as your marry price`);
 

@@ -1,26 +1,24 @@
 import { UserDocument, User } from "../db/User";
 import { MessageEmbed, User as UserDiscord } from "discord.js";
+import { Player as BasePlayer } from "discordjs-rpg";
 
-export class Player {
+export class Player extends BasePlayer {
+  doc: UserDocument;
 
-  constructor(
-    private discordUser: UserDiscord, 
-    public user: UserDocument,
-  ) {}
-
-  get name() {
-    return this.discordUser.username;
+  constructor(discordUser: UserDiscord, doc: UserDocument) {
+    super(discordUser);
+    this.doc = doc;
   }
 
   show() {
     
     const embed = new MessageEmbed()
       .setColor("RANDOM")
-      .setThumbnail(this.discordUser.displayAvatarURL())
-      .addField("Balance", `${this.user.balance} :taco:`, true)
-      .addField("Bank", `${this.user.bank} :taco:`, true)
-      .addField("Price to marry", `${this.user.price} :taco:`, true)
-      .addField("Spouse name", `${this.user.spouse?.name || "none"}`, true)
+      .setThumbnail(this.user.displayAvatarURL())
+      .addField("Balance", `${this.doc.balance} :taco:`, true)
+      .addField("Bank", `${this.doc.bank} :taco:`, true)
+      .addField("Price to marry", `${this.doc.price} :taco:`, true)
+      .addField("Spouse name", `${this.doc.spouse?.name || "none"}`, true)
 
     return embed;
   }

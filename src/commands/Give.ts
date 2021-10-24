@@ -16,7 +16,7 @@ export default class Give extends Command {
       const amount = parseInt(args[1]);
 
       validateNumber(amount);
-      validateAmount(amount, player.user.balance);
+      validateAmount(amount, player.doc.balance);
 
       if (!user) {
         throw new Error("you need to mention a user");
@@ -24,18 +24,18 @@ export default class Give extends Command {
 
       const recipient = await Player.fromUser(user);
 
-      player.user.balance -= amount;
-      recipient.user.balance += amount;
+      player.doc.balance -= amount;
+      recipient.doc.balance += amount;
 
-      player.user.save();
-      recipient.user.save();
+      player.doc.save();
+      recipient.doc.save();
 
       await msg.channel.send(
         `${player.name} gave ${recipient.name} ${amount} :taco:`
       );
 
       await msg.channel.send(
-        `They have ${recipient.user.balance} :taco: left`
+        `They have ${recipient.doc.balance} :taco: left`
       )
 
     } catch (err) {

@@ -11,16 +11,16 @@ export default class extends Command {
   async exec(msg: Message) {
 
     const player = await Player.fromUser(msg.author);
-    const lastClaim = DateTime.fromJSDate(player.user.lastClaim.weekly);
+    const lastClaim = DateTime.fromJSDate(player.doc.lastClaim.weekly);
     const now = DateTime.now();
     const diff = now.diff(lastClaim, ["weeks"]);
 
     if (diff.weeks > 1) {
       
-      player.user.balance += this.reward;
-      player.user.lastClaim.weekly = now.toJSDate();
+      player.doc.balance += this.reward;
+      player.doc.lastClaim.weekly = now.toJSDate();
       msg.channel.send(`Claimed weekly reward! Earned ${this.reward} :taco:`);
-      player.user.save();
+      player.doc.save();
 
     } else {
 

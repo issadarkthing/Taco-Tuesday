@@ -35,7 +35,7 @@ export default class Gamble extends Command {
       const amount = parseInt(args[0]);
 
       validateNumber(amount);
-      validateAmount(amount, player.user.balance);
+      validateAmount(amount, player.doc.balance);
 
       const rolled = roll();
 
@@ -46,7 +46,7 @@ export default class Gamble extends Command {
       if (result === "lose") {
 
         jackpot.amount += amount;
-        player.user.balance -= amount;
+        player.doc.balance -= amount;
 
         msg.channel.send(`They lost ${amount} :taco:`);
         msg.channel.send(`Jackpot now at ${jackpot.amount} :taco:`);
@@ -54,12 +54,12 @@ export default class Gamble extends Command {
       } else if (result === "win") {
 
         const winAmount = amount * 2;
-        player.user.balance += winAmount;
+        player.doc.balance += winAmount;
         msg.channel.send(`They win ${winAmount} :taco:`);
 
       } else if (result === "jackpot") {
 
-        player.user.balance += jackpot.amount;
+        player.doc.balance += jackpot.amount;
 
         msg.channel.send(
           `${player.name} WON THE JACKPOT, THEY GOT ${jackpot.amount}:taco:!!!`
@@ -70,7 +70,7 @@ export default class Gamble extends Command {
 
 
       jackpot.save();
-      player.user.save();
+      player.doc.save();
 
     } catch (err) {
       msg.channel.send((err as Error).message);

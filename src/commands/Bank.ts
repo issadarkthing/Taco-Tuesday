@@ -20,12 +20,12 @@ export default class Bank extends Command {
 
       if (action === "in") {
       
-        validateAmount(amount, player.user.balance);
+        validateAmount(amount, player.doc.balance);
 
-        player.user.bank += amount;
-        player.user.balance -= amount;
+        player.doc.bank += amount;
+        player.doc.balance -= amount;
 
-        const spouse = player.user.spouse;
+        const spouse = player.doc.spouse;
         if (spouse.userID !== undefined) {
           
           const spousePlayer = await User.findByUserID(spouse.userID);
@@ -37,12 +37,12 @@ export default class Bank extends Command {
 
       } else if (action === "out") {
         
-        validateAmount(amount, player.user.bank);
+        validateAmount(amount, player.doc.bank);
 
-        player.user.bank -= amount;
-        player.user.balance += amount;
+        player.doc.bank -= amount;
+        player.doc.balance += amount;
 
-        const spouse = player.user.spouse;
+        const spouse = player.doc.spouse;
         if (spouse.userID !== undefined) {
           
           const spousePlayer = await User.findByUserID(spouse.userID);
@@ -56,7 +56,7 @@ export default class Bank extends Command {
         throw new Error("invalid action");
       }
 
-      player.user.save();
+      player.doc.save();
 
     } catch (err) {
       msg.channel.send((err as Error).message);

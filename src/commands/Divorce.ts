@@ -20,22 +20,22 @@ export default class Divorce extends Command {
 
       const recipient = await Player.fromUser(user);
 
-      if (player.user.spouse.userID !== recipient.user.userID) {
+      if (player.doc.spouse.userID !== recipient.doc.userID) {
         throw new Error(`you are not married to ${recipient.name}`);
       }
 
-      const totalBank = Math.round(player.user.bank / 2);
+      const totalBank = Math.round(player.doc.bank / 2);
 
-      player.user.spouse.userID = undefined;
-      player.user.spouse.name = undefined;
-      player.user.bank = totalBank;
+      player.doc.spouse.userID = undefined;
+      player.doc.spouse.name = undefined;
+      player.doc.bank = totalBank;
 
-      recipient.user.spouse.userID = undefined;
-      recipient.user.spouse.name = undefined;
-      recipient.user.bank = totalBank;
+      recipient.doc.spouse.userID = undefined;
+      recipient.doc.spouse.name = undefined;
+      recipient.doc.bank = totalBank;
 
-      player.user.save();
-      recipient.user.save();
+      player.doc.save();
+      recipient.doc.save();
 
       msg.channel.send(`successfully divorced`);
 

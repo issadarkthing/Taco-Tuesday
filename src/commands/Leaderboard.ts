@@ -23,10 +23,10 @@ export default class Leaderboard extends Command {
       }
     }
     
-    players.sort((a, b) => b.user.balance - a.user.balance);
+    players.sort((a, b) => b.doc.balance - a.doc.balance);
 
     const list = players
-      .map((x, i) => `${i + 1}. ${x.name} ${x.user.balance} :taco:`)
+      .map((x, i) => `${i + 1}. ${x.name} ${x.doc.balance} :taco:`)
       .join("\n");
 
     const embed = new MessageEmbed()

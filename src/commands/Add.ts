@@ -26,8 +26,8 @@ export default class Add extends Command {
 
       const recipient = await Player.fromUser(user);
 
-      recipient.user.balance += amount;
-      recipient.user.save();
+      recipient.doc.balance += amount;
+      recipient.doc.save();
 
       await msg.channel.send(
         `Successfully add ${amount} :taco: to ${recipient.name}`

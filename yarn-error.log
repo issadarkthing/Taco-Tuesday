@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/bin/yarn add -D @types/discord-collector
+  /usr/bin/node /usr/bin/yarn add discord.js-rpg
 
 PATH: 
   /home/terra/.sdkman/candidates/java/current/bin:/home/terra/.zplug/bin:/home/terra/.npm-global/bin:/home/terra/.local/bin:/home/terra/go/bin:/home/terra/.emacs.d/bin:/home/terra/.deno/bin:/home/terra/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/opt/android-sdk/emulator:/opt/android-ndk:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
@@ -14,7 +14,7 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fdiscord-collector: Not found
+  Error: https://registry.yarnpkg.com/discord.js-rpg: Not found
       at Request.params.callback [as _callback] (/usr/lib/node_modules/yarn/lib/cli.js:67029:18)
       at Request.self.callback (/usr/lib/node_modules/yarn/lib/cli.js:140883:22)
       at Request.emit (node:events:390:28)
@@ -44,6 +44,7 @@ npm manifest:
     },
     "dependencies": {
       "@jiman24/commandment": "^0.2.7",
+      "common-tags": "^1.8.0",
       "discord-collector": "^1.11.8",
       "discord.js": "^13.2.0",
       "dotenv": "^10.0.0",
@@ -53,6 +54,7 @@ npm manifest:
       "typescript": "^4.4.4"
     },
     "devDependencies": {
+      "@types/common-tags": "^1.8.1",
       "@types/luxon": "^2.0.5",
       "@types/mongoose": "^5.11.97",
       "@types/random-js": "^2.0.0"
@@ -101,9 +103,9 @@ Lockfile:
       mime-types "^2.1.12"
   
   "@jiman24/commandment@^0.2.7":
-    version "0.2.7"
-    resolved "https://registry.yarnpkg.com/@jiman24/commandment/-/commandment-0.2.7.tgz#4946d8a513989f79a79dfaa094a03842cba757de"
-    integrity sha512-xmwpmELP495yKsx/2MLhcjH8stZdx6S76FADQ10WwTfPxWW8KuzIOBAkNUbvolWY8jLa1DGw0GT6alXGNzJKVw==
+    version "0.2.8"
+    resolved "https://registry.yarnpkg.com/@jiman24/commandment/-/commandment-0.2.8.tgz#f5507317e2a6dd856ec923896a5fbb96359faf26"
+    integrity sha512-pXuHm4+ddNoq9FUhfTjNR+ZkuzuOnCbVj6OoRuZgLMax8Nc1WkLmq1W5/XQ7tO/ocC04w3reJvjpX6TpfumbBQ==
     dependencies:
       chalk "^4.1.2"
       common-tags "^1.8.0"
@@ -120,6 +122,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.0.tgz#667bfc6186ae7c9e0b45a08960c551437176e1ca"
     integrity sha512-VkE3KLBmJwcCaVARtQpfuKcKv8gcBmUubrfHGF84dXuuW6jgsRYxPtzcIhPyK9WAPpRt2/xY6zkD9MnRaJzSyw==
   
+  "@types/common-tags@^1.8.1":
+    version "1.8.1"
+    resolved "https://registry.yarnpkg.com/@types/common-tags/-/common-tags-1.8.1.tgz#a5a49ca5ebbb58e0f8947f3ec98950c8970a68a9"
+    integrity sha512-20R/mDpKSPWdJs5TOpz3e7zqbeCNuMCPhV7Yndk9KU2Rbij2r5W4RzwDPkzC+2lzUqXYu9rFzTktCBnDjHuNQg==
+  
   "@types/luxon@^2.0.5":
     version "2.0.5"
     resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-2.0.5.tgz#29d3b095d55ee50df8f4cf109b16009334d9828e"
@@ -133,9 +140,9 @@ Lockfile:
       mongoose "*"
   
   "@types/node@*":
-    version "16.11.1"
-    resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.1.tgz#2e50a649a50fc403433a14f829eface1a3443e97"
-    integrity sha512-PYGcJHL9mwl1Ek3PLiYgyEKtwTMmkMw4vbiyz/ps3pfdRYLVv+SN7qHVAImrjdAXxgluDEw6Ph4lyv+m9UpRmA==
+    version "16.11.4"
+    resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.4.tgz#90771124822d6663814f7c1c9b45a6654d8fd964"
+    integrity sha512-TMgXmy0v2xWyuCSCJM6NCna2snndD8yvQF67J29ipdzMcsPa9u+o0tjF5+EQNdhcuZplYuouYqpc4zcd5I6amQ==
   
   "@types/random-js@^2.0.0":
     version "2.0.0"
