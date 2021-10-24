@@ -2,8 +2,8 @@ import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
 import { Player } from "../structure/Player";
 import { validateAmount, validateNumber } from "../utils";
-import { random } from "../utils";
 import { DateTime } from "luxon";
+import { Battle } from "discordjs-rpg";
 
 export default class extends Command {
   name = "duel";
@@ -59,7 +59,9 @@ export default class extends Command {
       player.doc.balance -= amount + battleTax;
       opponent.doc.balance -= amount;
 
-      const [winner, loser] = random.shuffle([player, opponent]);
+      const battle = new Battle(msg, [player, opponent]);
+      const winner = (await battle.run()) as Player;
+      const loser = player.id === winner.id ? opponent : player;
 
       winner.doc.balance += amount * 2;
 
