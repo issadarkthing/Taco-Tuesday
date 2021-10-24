@@ -1,6 +1,7 @@
 import { UserDocument, User } from "../db/User";
 import { MessageEmbed, User as UserDiscord } from "discord.js";
 import { Player as BasePlayer } from "discordjs-rpg";
+import { currency } from "../utils";
 
 export class Player extends BasePlayer {
   doc: UserDocument;
@@ -12,15 +13,18 @@ export class Player extends BasePlayer {
 
   show() {
     
-    const embed = new MessageEmbed()
-      .setColor("RANDOM")
-      .setThumbnail(this.user.displayAvatarURL())
-      .addField("Balance", `${this.doc.balance} :taco:`, true)
-      .addField("Bank", `${this.doc.bank} :taco:`, true)
-      .addField("Price to marry", `${this.doc.price} :taco:`, true)
-      .addField("Spouse name", `${this.doc.spouse?.name || "none"}`, true)
+    const profile = super.show();
+    const armorIndex = 8;
+    const armor = profile.fields.at(armorIndex)!.value;
+    profile.fields.at(armorIndex)!.name = "Balance";
+    profile.fields.at(armorIndex)!.value = `${this.doc.balance} ${currency}`;
+    profile.fields.at(armorIndex)!.inline = true;
 
-    return embed;
+    profile.addField("Bank", `${this.doc.bank} ${currency}`, true);
+
+    profile.addField("Armor", armor);
+
+    return profile;
   }
 
   static async fromUser(user: UserDiscord) {
