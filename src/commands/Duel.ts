@@ -5,9 +5,9 @@ import { validateAmount, validateNumber } from "../utils";
 import { random } from "../utils";
 import { DateTime } from "luxon";
 
-export default class Battle extends Command {
-  name = "battle";
-  description = "battle with other person to win taco";
+export default class extends Command {
+  name = "duel";
+  description = "duel with other person to win taco";
   maxCount = 5;
   cooldownTime = 1; // hours
 
@@ -19,7 +19,7 @@ export default class Battle extends Command {
       const amount = parseInt(args[1]);
 
       validateNumber(amount);
-      validateAmount(amount, player.user.balance);
+      validateAmount(amount, player.doc.balance);
 
       const mentionedUser = msg.mentions.users.first();
 
@@ -29,12 +29,12 @@ export default class Battle extends Command {
 
       const opponent = await Player.fromUser(mentionedUser);
 
-      if (opponent.user.balance < amount) {
+      if (opponent.doc.balance < amount) {
         throw new Error(`${opponent.name} has insufficient balance`);
       }
 
-      const lastTime = DateTime.fromJSDate(player.user.cooldowns.battle.time);
-      const { count } = player.user.cooldowns.battle;
+      const lastTime = DateTime.fromJSDate(player.doc.cooldowns.battle.time);
+      const { count } = player.doc.cooldowns.battle;
       const diff = Math.abs(lastTime.diffNow(["hours"]).hours);
 
       if (diff < this.cooldownTime && count >= this.maxCount) {
@@ -43,28 +43,28 @@ export default class Battle extends Command {
 
       }
 
-      if (player.user.cooldowns.battle.count >= this.maxCount) {
-        player.user.cooldowns.battle.count = 0;
+      if (player.doc.cooldowns.battle.count >= this.maxCount) {
+        player.doc.cooldowns.battle.count = 0;
       }
 
-      player.user.cooldowns.battle.time = DateTime.now().toJSDate();
-      player.user.cooldowns.battle.count += 1;
+      player.doc.cooldowns.battle.time = DateTime.now().toJSDate();
+      player.doc.cooldowns.battle.count += 1;
 
-      await player.user.save();
+      await player.doc.save();
 
       const battleTax = Math.round(amount * 0.2);
 
       msg.channel.send(`${battleTax} :taco: is taken from ${player.name}`);
 
-      player.user.balance -= amount + battleTax;
-      opponent.user.balance -= amount;
+      player.doc.balance -= amount + battleTax;
+      opponent.doc.balance -= amount;
 
       const [winner, loser] = random.shuffle([player, opponent]);
 
-      winner.user.balance += amount * 2;
+      winner.doc.balance += amount * 2;
 
-      winner.user.save();
-      loser.user.save();
+      winner.doc.save();
+      loser.doc.save();
 
       msg.channel.send(`${winner.name} wins over ${opponent.name}!`);
       msg.channel.send(`${winner.name} earns ${amount * 2} :taco:`);
