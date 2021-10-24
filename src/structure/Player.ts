@@ -14,11 +14,13 @@ export class Player extends BasePlayer {
     this.armors.forEach(armor => this.equipArmor(armor));
   }
 
+  /** array of equipped armors */
   get armors() {
     return this.doc.equippedArmors
       .map(armorID => BaseArmor.all.find(x => x.id === armorID)!);
   }
 
+  /** array of armors in inventory */
   get armorInventory() {
     return this.doc.armors
       .map(armorID => BaseArmor.all.find(x => x.id === armorID)!);
