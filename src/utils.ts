@@ -36,3 +36,22 @@ export function sleep(time: number) {
     setTimeout(resolve, time);
   })
 }
+
+function remove1<T>(item: T, arr: T[]) {
+  const copy = [...arr];
+  const index = copy.findIndex(x => x === item);
+
+  if (index !== undefined) {
+    copy.splice(index, 1);
+  }
+
+  return copy;
+}
+
+export function remove<T>(item: T, arr: T[], count = 1) {
+  for (let i = 0; i < count; i++) {
+    arr = remove1(item, arr);
+  }
+
+  return arr;
+}

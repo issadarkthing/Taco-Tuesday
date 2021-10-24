@@ -2,6 +2,7 @@ import { Message, MessageActionRow, MessageButton, MessageComponentInteraction, 
 import { currency, toNList } from "../utils";
 import { BaseArmor } from "../structure/Armor";
 import { Command } from "@jiman24/commandment";
+import { ButtonHandler } from "../structure/ButtonHandler";
 
 
 export default class extends Command {
@@ -30,31 +31,15 @@ export default class extends Command {
         }
 
         const info = selected.show();
+        const menu = new ButtonHandler(msg, info);
 
-        const button = new MessageButton()
-          .setCustomId("buy")
-          .setLabel("buy")
-          .setStyle("PRIMARY");
-
-        const row = new MessageActionRow()
-          .addComponents(button);
-
-        msg.channel.send({ embeds: [info], components: [row] });
-
-        const filter = (i: MessageComponentInteraction) => {
-          i.deferUpdate().catch(() => {});
-          return i.user.id === msg.author.id;
-        }
-
-        const collector = msg.channel.createMessageComponentCollector({ max: 1, filter });
-
-        collector.on("end", buttons => {
-          const button = buttons.first();
-
-          if (!button) return;
-
-          selected.buy(msg);
+        menu.addButton("buy", () => {
+          return selected.buy(msg);
         })
+
+        menu.addCloseButton();
+
+        await menu.run();
 
         return;
       }

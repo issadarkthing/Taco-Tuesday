@@ -1,7 +1,8 @@
 import { Command } from "@jiman24/commandment";
 import { Message, MessageEmbed } from "discord.js";
+import { ButtonHandler } from "../structure/ButtonHandler";
 import { Player } from "../structure/Player";
-import { toNList, validateNumber } from "../utils";
+import { remove, toNList, validateNumber } from "../utils";
 
 export default class extends Command {
   name = "inventory";
@@ -26,7 +27,20 @@ export default class extends Command {
           throw new Error("cannot find item");
         }
 
-        msg.channel.send({ embeds: [item.show()] });
+        const menu = new ButtonHandler(msg, item.show());
+
+        menu.addButton("equip", () => {
+
+          player.doc.equippedArmors.push(item.id);
+          player.doc.armors = remove(item.id, player.doc.armors);
+          player.doc.save();
+
+          msg.channel.send(`Successfully equipped ${item.name}`);
+
+        })
+
+        menu.addCloseButton();
+        await menu.run();
 
         return;
       }
