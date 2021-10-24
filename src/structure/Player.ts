@@ -1,5 +1,5 @@
 import { UserDocument, User } from "../db/User";
-import { MessageEmbed, User as UserDiscord } from "discord.js";
+import { User as UserDiscord } from "discord.js";
 import { Player as BasePlayer } from "discordjs-rpg";
 import { currency } from "../utils";
 
@@ -9,6 +9,8 @@ export class Player extends BasePlayer {
   constructor(discordUser: UserDiscord, doc: UserDocument) {
     super(discordUser);
     this.doc = doc;
+
+    this.doc.armors.forEach(armor => this.equipArmor(armor));
   }
 
   show() {
