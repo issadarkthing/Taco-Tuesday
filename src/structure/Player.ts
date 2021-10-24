@@ -1,7 +1,7 @@
 import { UserDocument, User } from "../db/User";
 import { User as UserDiscord } from "discord.js";
 import { Player as BasePlayer } from "discordjs-rpg";
-import { currency } from "../utils";
+import { currency, inlineCode } from "../utils";
 import { BaseArmor } from "./Armor";
 
 export class Player extends BasePlayer {
@@ -26,6 +26,28 @@ export class Player extends BasePlayer {
       .map(armorID => BaseArmor.all.find(x => x.id === armorID)!);
   }
 
+  /** required xp to upgrade to the next level */
+  private requiredXP() {
+    let x = 10;
+    let lvl = this.doc.level
+    while (lvl > 1) {
+      x += Math.round(x * 0.4);
+      lvl--;
+    }
+    return x;
+  }
+
+  /** adds xp and upgrades level accordingly */
+  addXP(amount: number) {
+    this.doc.xp += amount;
+    const requiredXP = this.requiredXP();
+
+    if (this.doc.xp >= requiredXP) {
+      this.doc.level++;
+      this.addXP(0);
+    }
+  }
+
   show() {
     
     const profile = super.show();
@@ -36,6 +58,9 @@ export class Player extends BasePlayer {
     profile.fields.at(armorIndex)!.inline = true;
 
     profile.addField("Bank", `${this.doc.bank} ${currency}`, true);
+
+    profile.addField("Level", inlineCode(this.doc.level), true);
+    profile.addField("XP", `\`${this.doc.xp}/${this.requiredXP()}\``, true);
 
     profile.addField("Armor", armor);
 

@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   price: { type: Number, default: 5000 },
   armors: [String],
   equippedArmors: [String],
+  level: { type: Number, default: 1 },
+  xp: { type: Number, default: 0 },
   spouse: {
     userID: String,
     name: String,
@@ -39,6 +41,8 @@ export interface UserDocument extends Document {
   userID: string;
   balance: number;
   price: number;
+  level: number;
+  xp: number;
   armors: string[];
   equippedArmors: string[];
   spouse: {
