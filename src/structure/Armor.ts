@@ -32,7 +32,7 @@ export abstract class BaseArmor extends Armor {
     player.doc.armors.push(this);
 
     await player.doc.save();
-    msg.channel.send(`Successfully equipped **${this.name}**`);
+    msg.channel.send(`Successfully bought **${this.name}**`);
   }
 }
 
