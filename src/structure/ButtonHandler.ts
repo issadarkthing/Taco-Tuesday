@@ -59,10 +59,17 @@ export class ButtonHandler {
 
   async run() {
     const buttons = this.buttons.map((x) => {
-      return new MessageButton()
+
+      const btn = new MessageButton()
         .setCustomId(x.id)
         .setLabel(x.label)
         .setStyle("PRIMARY");
+
+      if (x.id === "cancel") {
+        btn.setStyle("DANGER");
+      }
+
+      return btn
     });
 
     const row = new MessageActionRow().addComponents(buttons);
