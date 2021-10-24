@@ -10,7 +10,7 @@ export class Player extends BasePlayer {
     super(discordUser);
     this.doc = doc;
 
-    this.doc.armors.forEach(armor => this.equipArmor(armor));
+    this.doc.equippedArmors.forEach(armor => this.equipArmor(armor));
   }
 
   show() {

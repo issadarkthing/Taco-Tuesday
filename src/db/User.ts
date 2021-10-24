@@ -7,6 +7,7 @@ const userSchema = new Schema({
   balance: { type: Number, default: 1000 },
   price: { type: Number, default: 5000 },
   armors: [],
+  equippedArmors: [],
   spouse: {
     userID: String,
     name: String,
@@ -40,6 +41,7 @@ export interface UserDocument extends Document {
   balance: number;
   price: number;
   armors: BaseArmor[];
+  equippedArmors: BaseArmor[];
   spouse: {
     userID?: string;
     name?: string;
