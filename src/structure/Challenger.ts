@@ -23,6 +23,49 @@ export class Challenger extends Fighter {
   }
 }
 
+export class DungeonChallenger extends Fighter {
+  drop = random.integer(250, 1000);
+  xpDrop = random.integer(50, 95);
+
+  static get all(): DungeonChallenger[] {
+    return [
+      new Vermin(),
+      new Gallserpent(),
+      new Vexhood(),
+    ]
+  }
+}
+
+export class Vermin extends DungeonChallenger {
+  attack = 50;
+  hp = 500;
+  armor = 0.15;
+  critChance = 0.31;
+  critDamage = 1.5;
+
+  constructor() { super("Silver Shadow Vermin") }
+}
+
+export class Gallserpent extends DungeonChallenger {
+  attack = 80;
+  hp = 800;
+  armor = 0.2;
+  critChance = 0.32;
+  critDamage = 1.7;
+
+  constructor() { super("GallSerpent") }
+}
+
+export class Vexhood extends DungeonChallenger {
+  attack = 100;
+  hp = 1100;
+  armor = 0.25;
+  critChance = 0.35;
+  critDamage = 1.9;
+
+  constructor() { super("Vexhood") }
+}
+
 
 const names = [
   "Aboleth",

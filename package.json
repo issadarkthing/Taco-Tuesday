@@ -18,7 +18,7 @@
     "common-tags": "^1.8.0",
     "discord-collector": "^1.11.8",
     "discord.js": "^13.2.0",
-    "discordjs-rpg": "^2.0.0",
+    "discordjs-rpg": "^2.2.1",
     "dotenv": "^10.0.0",
     "luxon": "^2.0.2",
     "mongoose": "^6.0.11",

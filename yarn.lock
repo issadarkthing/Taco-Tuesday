@@ -297,10 +297,10 @@ discord.js@^13.1.0, discord.js@^13.2.0:
     node-fetch "^2.6.1"
     ws "^8.2.3"
 
-discordjs-rpg@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/discordjs-rpg/-/discordjs-rpg-2.0.0.tgz#6c8bb454ae185079de58e6b9d5fec334df01396f"
-  integrity sha512-Ot0LMs1oRpQwShSDJt5pf1QsB4d9yhJb5K6b+iaOaDUOaPnxGAdpbm3K3Ixp91QXpebQc+e3QE4bL5yiAsrAPA==
+discordjs-rpg@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/discordjs-rpg/-/discordjs-rpg-2.2.1.tgz#2a9b9692acc54457ca2da3a736e5d5ab278b8354"
+  integrity sha512-KztxuFV7C8BGn8+5Iw/ccMDFnEQTpVUqVpUS+qpwqMyJ/gYb24qQAyUam1OyDFBopSkc5uyb2bvtneFVG9N9RQ==
   dependencies:
     common-tags "^1.8.0"
     discord.js "^13.1.0"

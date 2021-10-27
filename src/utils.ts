@@ -35,6 +35,13 @@ export function validateAmount(amount: number, balance: number) {
   }
 }
 
+class InvalidIndex extends Error {}
+
+export function validateIndex<T>(index: number, arr: T[]) {
+  if (index < 0 || index > arr.length - 1) 
+    throw new InvalidIndex(`cannot find item in index ${index}`);
+}
+
 export const random = new Random(MersenneTwister19937.autoSeed());
 
 export const roll = () => random.integer(1, 100);
