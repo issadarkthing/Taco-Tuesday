@@ -133,9 +133,7 @@ export class ButtonHandler {
           });
         } 
 
-        if (!btn) return;
-
-        btn.callback(btn.id, button.user);
+        if (btn) btn.callback(btn.id, button.user);
       })
 
       collector.on("end", () => {
