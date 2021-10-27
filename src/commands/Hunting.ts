@@ -8,6 +8,7 @@ import { bold, sleep } from "../utils";
 
 export default class extends Command {
   name = "hunt";
+  description = "fight monsters and level up";
 
   async exec(msg: Message) {
 
