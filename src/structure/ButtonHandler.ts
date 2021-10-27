@@ -11,7 +11,7 @@ import crypto from "crypto";
 interface Button {
   id: string;
   label: string;
-  callback: (id?: string, user?: User) => void | Promise<void>;
+  callback: (user?: User, id?: string) => void | Promise<void>;
 }
 
 type ButtonCallback = Button["callback"];
@@ -23,7 +23,8 @@ export class ButtonHandler {
   private userID: string;
   private embed: MessageEmbed;
   private buttons: Button[] = [];
-  private multiUser = false;
+  private timeout = 60_000;
+  private maxUser = 1;
   private id = this.uuid();
 
   constructor(msg: Message, embed: MessageEmbed | string, userID?: string) {
@@ -54,8 +55,17 @@ export class ButtonHandler {
     return id.split("-")[0];
   }
 
-  setMultiUser() {
-    this.multiUser = true;
+  private isMultiUser() {
+    return this.maxUser !== 1;
+  }
+
+  setMultiUser(max: number) {
+    this.maxUser = max;
+    return this;
+  }
+
+  setTimeout(ms: number) {
+    this.timeout = ms;
     return this;
   }
 
@@ -110,18 +120,20 @@ export class ButtonHandler {
     const filter = (i: MessageComponentInteraction) => {
       i.deferUpdate().catch(() => {});
 
-      if (this.multiUser) return true;
+      if (this.isMultiUser()) return true;
 
       return i.user.id === this.userID;
     };
 
     const collector = this.msg.channel.createMessageComponentCollector({
-      max: this.multiUser ? Number.MAX_SAFE_INTEGER : 1,
+      max: this.isMultiUser() ? this.maxUser : 1,
       filter,
-      time: 60_000,
+      time: this.timeout,
     });
 
     return new Promise<void>((resolve) => {
+
+      const promises: Promise<void>[] = [];
 
       collector.on("collect", async button => {
         let btn = this.buttons.find(x => x.id === button.customId);
@@ -133,7 +145,13 @@ export class ButtonHandler {
           });
         } 
 
-        if (btn) btn.callback(btn.id, button.user);
+        if (btn) {
+          
+          const promise = btn.callback(button.user, button.customId);
+
+          if (promise) promises.push(promise);
+        }
+
       })
 
       collector.on("end", () => {
@@ -144,7 +162,9 @@ export class ButtonHandler {
           GLOBAL_BUTTONS.splice(index, 1);
         }
 
-        resolve();
+        Promise.allSettled(promises)
+          .then(() => resolve())
+          .catch(() => {})
       });
     });
   }
