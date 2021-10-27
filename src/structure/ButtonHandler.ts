@@ -96,7 +96,7 @@ export class ButtonHandler {
         .setLabel(x.label)
         .setStyle("PRIMARY");
 
-      if (x.id === "cancel") {
+      if (x.id.includes("cancel")) {
         btn.setStyle("DANGER");
       }
 
