@@ -4,19 +4,27 @@ import {
   MessageButton,
   MessageActionRow,
   MessageComponentInteraction,
+  User,
 } from "discord.js";
+import crypto from "crypto";
 
 interface Button {
   id: string;
   label: string;
-  callback: (id?: string) => void | Promise<void>;
+  callback: (id?: string, user?: User) => void | Promise<void>;
 }
+
+type ButtonCallback = Button["callback"];
+
+const GLOBAL_BUTTONS: Button[] = [];
 
 export class ButtonHandler {
   private msg: Message;
   private userID: string;
   private embed: MessageEmbed;
   private buttons: Button[] = [];
+  private multiUser = false;
+  private id = this.uuid();
 
   constructor(msg: Message, embed: MessageEmbed | string, userID?: string) {
     this.msg = msg;
@@ -34,27 +42,50 @@ export class ButtonHandler {
     }
   }
 
-  private labelToID(label: string) {
-    return label.replace(/\s+/, "-");
+  private uuid() {
+    return crypto.randomBytes(16).toString("hex");
   }
 
-  addButton(label: string, callback: (emoji?: string) => void | Promise<void>) {
-    this.buttons.push({
-      id: this.labelToID(label),
+  private labelToID(label: string) {
+    return `${this.id}-` + label.replace(/\s+/, "") + `-${this.uuid()}`;
+  }
+
+  private getButtonHandlerID(id: string) {
+    return id.split("-")[0];
+  }
+
+  setMultiUser() {
+    this.multiUser = true;
+    return this;
+  }
+
+  addButton(label: string, callback: ButtonCallback) {
+    const id = this.labelToID(label);
+    const button = {
+      id,
       label,
       callback,
-    });
+    }
+
+    this.buttons.push(button);
+    GLOBAL_BUTTONS.push(button);
+
     return this;
   }
 
   addCloseButton() {
     const label = "cancel";
-
-    this.buttons.push({
-      id: this.labelToID(label),
+    const id = this.labelToID(label);
+    const button = {
+      id,
       label,
       callback: () => {},
-    });
+    }
+
+    this.buttons.push(button);
+    GLOBAL_BUTTONS.push(button);
+
+    return this;
   }
 
   async run() {
@@ -78,24 +109,43 @@ export class ButtonHandler {
 
     const filter = (i: MessageComponentInteraction) => {
       i.deferUpdate().catch(() => {});
+
+      if (this.multiUser) return true;
+
       return i.user.id === this.userID;
     };
 
     const collector = this.msg.channel.createMessageComponentCollector({
-      max: 1,
+      max: this.multiUser ? Number.MAX_SAFE_INTEGER : 1,
       filter,
+      time: 60_000,
     });
 
     return new Promise<void>((resolve) => {
-      collector.on("end", async (buttons) => {
-        const button = buttons.first();
+
+      collector.on("collect", async button => {
+        let btn = this.buttons.find(x => x.id === button.customId);
+
+        if (!btn) {
+          btn = GLOBAL_BUTTONS.find(x => {
+            const btnHandlerID = this.getButtonHandlerID(x.id);
+            return btnHandlerID === this.id && x.id === button.customId
+          });
+        } 
+
+        if (!btn) return;
+
+        btn.callback(btn.id, button.user);
+      })
+
+      collector.on("end", () => {
         menu.delete();
 
-        if (!button) return;
+        for (const button of this.buttons) {
+          const index = GLOBAL_BUTTONS.findIndex(x => x.id === button.id);
+          GLOBAL_BUTTONS.splice(index, 1);
+        }
 
-        const btn = this.buttons.find((x) => x.id === button.customId)!;
-
-        await btn.callback();
         resolve();
       });
     });
