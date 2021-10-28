@@ -178,7 +178,7 @@ export class ButtonHandler {
       })
 
       collector.on("end", () => {
-        menu.delete();
+        menu.delete().catch();
 
         for (const button of this.buttons) {
           const index = GLOBAL_BUTTONS.findIndex(x => x.id === button.id);
