@@ -33,15 +33,30 @@ export default class extends Command {
 
         if (item instanceof BaseArmor) {
 
-          menu.addButton("equip", () => {
+          if (player.armors.some(x => x.id === item.id)) {
+            
+            menu.addButton("unequip", () => {
 
-            player.doc.equippedArmors.push(item.id);
-            player.doc.armors = remove(item.id, player.doc.armors);
-            player.doc.save();
+              player.doc.equippedArmors = remove(item.id, player.doc.equippedArmors);
+              player.doc.armors.push(item.id);
+              player.doc.save();
 
-            msg.channel.send(`Successfully equipped ${item.name}`);
+              msg.channel.send(`Successfully unequipped ${item.name}`);
+            })
 
-          })
+          } else {
+
+            menu.addButton("equip", () => {
+
+              player.doc.equippedArmors.push(item.id);
+              player.doc.armors = remove(item.id, player.doc.armors);
+              player.doc.save();
+
+              msg.channel.send(`Successfully equipped ${item.name}`);
+
+            })
+          }
+
 
         } else if (item instanceof BasePet) {
 

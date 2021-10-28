@@ -7,6 +7,7 @@ import { remove, toNList, validateNumber } from "../utils";
 
 export default class extends Command {
   name = "armor";
+  disable = true;
 
   async exec(msg: Message, args: string[]) {
 

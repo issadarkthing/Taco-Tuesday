@@ -105,6 +105,7 @@ export class Player extends BasePlayer {
 
   get inventory() {
     return [
+      ...this.armors,
       ...this.armorInventory,
       ...this.pets,
     ];
