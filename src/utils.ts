@@ -39,7 +39,7 @@ class InvalidIndex extends Error {}
 
 export function validateIndex<T>(index: number, arr: T[]) {
   if (index < 0 || index > arr.length - 1) 
-    throw new InvalidIndex(`cannot find item in index ${index}`);
+    throw new InvalidIndex(`cannot find item in index ${index + 1}`);
 }
 
 export const random = new Random(MersenneTwister19937.autoSeed());

@@ -1,14 +1,27 @@
 import { Message, MessageEmbed } from "discord.js";
-import { currency, inlineCode, toNList } from "../utils";
+import { currency, inlineCode, toNList, validateIndex, validateNumber } from "../utils";
 import { BaseArmor } from "../structure/Armor";
 import { Command } from "@jiman24/commandment";
 import { ButtonHandler } from "../structure/ButtonHandler";
 import { BasePet } from "../structure/Pet";
 import { BaseWeapon } from "../structure/Weapon";
+import { stripIndents } from "common-tags";
+
+interface Item {
+  name: string;
+  price: number;
+}
 
 export default class extends Command {
   name = "shop";
   description = "buy custom role and rpg stuff";
+
+  private toList(items: Item[], start = 1) {
+    return toNList(
+      items.map(x => `${x.name} ${inlineCode(x.price)} ${currency}`),
+      start,
+    );
+  }
 
   async exec(msg: Message, args: string[]) {
 
@@ -16,19 +29,20 @@ export default class extends Command {
 
       const items = [
         ...BaseArmor.all,
-        ...BasePet.all,
         ...BaseWeapon.all,
+        ...BasePet.all,
       ];
-      const [index] = args;
+      const [arg1] = args;
 
 
-      if (index) {
+      if (arg1) {
 
-        const selected = items.at(parseInt(index) - 1);
+        const index = parseInt(arg1) - 1;
 
-        if (!selected) {
-          throw new Error("no item found");
-        }
+        validateNumber(index);
+        validateIndex(index, items);
+
+        const selected = items[index];
 
         const info = selected.show();
         const menu = new ButtonHandler(msg, info);
@@ -45,9 +59,23 @@ export default class extends Command {
       }
 
 
-      const rpgList = toNList(
-        items.map(x => `${x.name} ${inlineCode(x.price)} ${currency}`)
+      const armorList = this.toList(BaseArmor.all);
+      const weaponList = this.toList(BaseWeapon.all, BaseArmor.all.length + 1);
+      const petList = this.toList(
+        BasePet.all, 
+        BaseWeapon.all.length + BaseArmor.all.length + 1,
       );
+
+      const rpgList = stripIndents`
+      **Armor**
+      ${armorList}
+
+      **Weapon**
+      ${weaponList}
+
+      **Pet**
+      ${petList}
+      `;
 
       const shop = new MessageEmbed()
         .setColor("RANDOM")
