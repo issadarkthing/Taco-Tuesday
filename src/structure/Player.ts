@@ -91,7 +91,7 @@ export class Player extends BasePlayer {
 
   addBalanceAndShow(msg: Message, amount: number) {
     this.addBalance(amount);
-    msg.channel.send(`${this.name} has earned ${bold(amount)} coins!`);
+    msg.channel.send(`${this.name} has earned ${bold(amount)} ${currency}!`);
   }
 
   netWorth() {
