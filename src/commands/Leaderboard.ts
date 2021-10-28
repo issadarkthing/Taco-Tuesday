@@ -2,6 +2,7 @@ import { Command } from "@jiman24/commandment";
 import { Message, MessageEmbed } from "discord.js";
 import { User } from "../db/User";
 import { Player } from "../structure/Player";
+import { bold, currency } from "../utils";
 
 export default class Leaderboard extends Command {
   name = "leaderboard";
@@ -11,22 +12,17 @@ export default class Leaderboard extends Command {
   async exec(msg: Message) {
 
 
-    const userDocs = await User.find();
-    const players: Player[] = [];
+    const userDocs = await User.find().sort({ level: -1 }).limit(10);
+    const users = await Promise.all(userDocs.map(x => msg.client.users.fetch(x.userID)));
+    const players: Player[] = users.filter(x => !!x).map(user => {
+      const userDoc = userDocs.find(x => x.userID === user!.id)!;
+      return new Player(user, userDoc);
+    })
 
-    for (const userDoc of userDocs) {
-
-      const user = await msg.client.users.fetch(userDoc.userID);
-
-      if (user) {
-        players.push(new Player(user, userDoc));
-      }
-    }
-    
-    players.sort((a, b) => b.doc.balance - a.doc.balance);
+    console.log(players);
 
     const list = players
-      .map((x, i) => `${i + 1}. ${x.name} ${x.doc.balance} :taco:`)
+      .map((x, i) => `${i + 1}. ${x.name} | Level ${bold(x.doc.level)} | ${bold(x.netWorth())} ${currency}`)
       .join("\n");
 
     const embed = new MessageEmbed()

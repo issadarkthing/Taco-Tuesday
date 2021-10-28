@@ -68,6 +68,10 @@ export class Player extends BasePlayer {
     msg.channel.send(`${this.name} has earned ${bold(amount)} coins!`);
   }
 
+  netWorth() {
+    return this.doc.balance + this.doc.bank;
+  }
+
   show() {
     
     const profile = super.show();
