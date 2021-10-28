@@ -1,7 +1,7 @@
 import { Command } from "@jiman24/commandment";
 import { Message, MessageEmbed } from "discord.js";
 import { DungeonChallenger } from "../structure/Challenger";
-import { toNList, validateIndex, validateNumber } from "../utils";
+import { bold, toNList, validateIndex, validateNumber } from "../utils";
 import { ButtonHandler } from "../structure/ButtonHandler";
 import { Player } from "../structure/Player";
 import { Battle } from "discordjs-rpg";
@@ -43,6 +43,17 @@ export default class extends Command {
 
           menu.addButton("join", async (user) => {
             const player = await Player.fromUser(user!);
+
+            if (player.doc.level < boss.minLevel) {
+              msg.channel.send(`${player.name} does not minimum level requirement`);
+              return;
+            }
+
+            if (players.some(x => x.id === player.id)) {
+              msg.channel.send(`${player.name} already joined the raid!`);
+              return;
+            }
+
             players.push(player);
             msg.channel.send(`${user!.username} joined the raid!`);
           })
@@ -88,7 +99,8 @@ export default class extends Command {
         return;
       }
 
-      const bosses = toNList(DungeonChallenger.all.map(x => x.name));
+      const bosses = toNList(DungeonChallenger.all
+        .map(x => `${x.name} | Min Level: ${bold(x.minLevel)}`));
 
       const embed = new MessageEmbed()
         .setColor("RANDOM")

@@ -23,9 +23,10 @@ export class Challenger extends Fighter {
   }
 }
 
-export class DungeonChallenger extends Fighter {
+export abstract class DungeonChallenger extends Fighter {
   drop = random.integer(250, 1000);
   xpDrop = random.integer(50, 95);
+  abstract minLevel: number;
 
   static get all(): DungeonChallenger[] {
     return [
@@ -42,6 +43,7 @@ export class Vermin extends DungeonChallenger {
   armor = 0.15;
   critChance = 0.31;
   critDamage = 1.5;
+  minLevel = 5;
 
   constructor() { super("Silver Shadow Vermin") }
 }
@@ -52,6 +54,7 @@ export class Gallserpent extends DungeonChallenger {
   armor = 0.2;
   critChance = 0.32;
   critDamage = 1.7;
+  minLevel = 15;
 
   constructor() { super("GallSerpent") }
 }
@@ -62,6 +65,7 @@ export class Vexhood extends DungeonChallenger {
   armor = 0.25;
   critChance = 0.35;
   critDamage = 1.9;
+  minLevel = 30;
 
   constructor() { super("Vexhood") }
 }
