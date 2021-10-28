@@ -1,9 +1,9 @@
-import { Message, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed } from "discord.js";
-import { currency, toNList } from "../utils";
+import { Message, MessageEmbed } from "discord.js";
+import { currency, inlineCode, toNList } from "../utils";
 import { BaseArmor } from "../structure/Armor";
 import { Command } from "@jiman24/commandment";
 import { ButtonHandler } from "../structure/ButtonHandler";
-
+import { BasePet } from "../structure/Pet";
 
 export default class extends Command {
   name = "shop";
@@ -15,9 +15,7 @@ export default class extends Command {
 
       const items = [
         ...BaseArmor.all,
-      ];
-      const rpgs = [
-        ...BaseArmor.all,
+        ...BasePet.all,
       ];
       const [index] = args;
 
@@ -45,7 +43,9 @@ export default class extends Command {
       }
 
 
-      const rpgList = toNList(rpgs.map(x => `${x.name} \`${x.price}\` ${currency}`));
+      const rpgList = toNList(
+        items.map(x => `${x.name} ${inlineCode(x.price)} ${currency}`)
+      );
 
       const shop = new MessageEmbed()
         .setColor("RANDOM")
