@@ -19,8 +19,6 @@ export default class Leaderboard extends Command {
       return new Player(user, userDoc);
     })
 
-    console.log(players);
-
     const list = players
       .map((x, i) => `${i + 1}. ${x.name} | Level ${bold(x.doc.level)} | ${bold(x.netWorth())} ${currency}`)
       .join("\n");
