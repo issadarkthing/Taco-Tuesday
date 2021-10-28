@@ -1,6 +1,8 @@
 import { Command } from "@jiman24/commandment";
 import { Message, MessageEmbed } from "discord.js";
+import { BaseArmor } from "../structure/Armor";
 import { ButtonHandler } from "../structure/ButtonHandler";
+import { BasePet } from "../structure/Pet";
 import { Player } from "../structure/Player";
 import { remove, toNList, validateNumber } from "../utils";
 
@@ -29,15 +31,44 @@ export default class extends Command {
 
         const menu = new ButtonHandler(msg, item.show());
 
-        menu.addButton("equip", () => {
+        if (item instanceof BaseArmor) {
 
-          player.doc.equippedArmors.push(item.id);
-          player.doc.armors = remove(item.id, player.doc.armors);
-          player.doc.save();
+          menu.addButton("equip", () => {
 
-          msg.channel.send(`Successfully equipped ${item.name}`);
+            player.doc.equippedArmors.push(item.id);
+            player.doc.armors = remove(item.id, player.doc.armors);
+            player.doc.save();
 
-        })
+            msg.channel.send(`Successfully equipped ${item.name}`);
+
+          })
+
+        } else if (item instanceof BasePet) {
+
+          if (player.activePet?.id === item.id) {
+
+            menu.addButton("deactivate", () => {
+
+              player.doc.activePet = undefined;
+              player.doc.save();
+
+              msg.channel.send(`Successfully deactive ${item.name}`);
+            })
+
+          } else {
+
+            menu.addButton("activate", () => {
+
+              player.doc.activePet = item.id;
+              player.doc.save();
+
+              msg.channel.send(`Successfully make ${item.name} as active pet`);
+
+            })
+          }
+
+        }
+
 
         menu.addCloseButton();
         await menu.run();
