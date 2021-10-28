@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 import { Battle } from "discordjs-rpg";
 import { Challenger } from "../structure/Challenger";
 import { Player } from "../structure/Player";
-import { bold, sleep } from "../utils";
+import { sleep } from "../utils";
 
 
 export default class extends Command {
@@ -12,25 +12,31 @@ export default class extends Command {
 
   async exec(msg: Message) {
 
-    const player = await Player.fromUser(msg.author);
-    const challenger = new Challenger(player);
+    try {
 
-    const info = challenger.show().setTitle("Your opponent");
+      const player = await Player.fromUser(msg.author);
+      const challenger = new Challenger(player);
 
-    await msg.channel.send(`You encountered ${challenger.name} while hunting!`);
-    const loading = await msg.channel.send({ embeds: [info] });
-    await sleep(10_000);
-    await loading.delete();
+      const info = challenger.show().setTitle("Your opponent");
 
-    const battle = new Battle(msg, [player, challenger]);
-    const winner = await battle.run();
+      await msg.channel.send(`You encountered ${challenger.name} while hunting!`);
+      const loading = await msg.channel.send({ embeds: [info] });
+      await sleep(10_000);
+      await loading.delete();
 
-    if (winner.id === player.id) {
+      const battle = new Battle(msg, [player, challenger]);
+      const winner = await battle.run();
 
-      player.addXPandShow(msg, challenger.xpDrop);
-      player.addBalanceAndShow(msg, challenger.drop);
-      await player.doc.save();
+      if (winner.id === player.id) {
 
-    } 
+        player.addXPandShow(msg, challenger.xpDrop);
+        player.addBalanceAndShow(msg, challenger.drop);
+        await player.doc.save();
+
+      } 
+
+    } catch (err) {
+      msg.channel.send((err as Error).message);
+    }
   }
 }
