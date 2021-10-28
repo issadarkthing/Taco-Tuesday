@@ -5,9 +5,13 @@ import { toNList, validateIndex, validateNumber } from "../utils";
 import { ButtonHandler } from "../structure/ButtonHandler";
 import { Player } from "../structure/Player";
 import { Battle } from "discordjs-rpg";
+import { oneLine } from "common-tags";
 
 export default class extends Command {
   name = "raid";
+  max = 4;
+  block = true;
+  timeout = 20; // seconds
 
   async exec(msg: Message, args: string[]) {
 
@@ -24,25 +28,62 @@ export default class extends Command {
 
         const boss = DungeonChallenger.all[index];
 
-        const menu = new ButtonHandler(msg, boss.show())
-          .setMultiUser(2)
-          .setTimeout(20_000);
+        const menu = new ButtonHandler(msg, boss.show());
 
-        const players: Player[] = [];
+        menu.addButton("start raid", async () => {
 
-        menu.addButton("join", async (user) => {
-          const player = await Player.fromUser(user!);
-          players.push(player);
-          msg.channel.send(`${user!.username} joined the raid!`);
+          const menu = new ButtonHandler(msg, 
+            oneLine`Starting a raid against ${boss.name}. ${this.max} players
+            max. Starting in ${this.timeout}s`
+          )
+            .setMultiUser(this.max)
+            .setTimeout(this.timeout * 1000);
+
+          const players: Player[] = [];
+
+          menu.addButton("join", async (user) => {
+            const player = await Player.fromUser(user!);
+            players.push(player);
+            msg.channel.send(`${user!.username} joined the raid!`);
+          })
+
+          menu.addButton("cancel", (user) => {
+            if (user!.id !== msg.author.id) {
+              msg.channel.send(`Only ${msg.author.username} can cancel the raid`);
+            } else {
+              throw new Error("raid cancelled");
+            }
+          })
+
+          await menu.run();
+
+          const battle = new Battle(msg, [...players, boss]);
+
+          battle.setBoss(boss);
+
+          const winner = await battle.run();
+
+          if (winner.id === boss.id) {
+
+            msg.channel.send("Mission failed");
+
+          } else {
+
+            msg.channel.send(`${boss.name} has been successfully defeated!`);
+            const { xpDrop, drop } = boss;
+
+            for (const player of players) {
+
+              player.addXPandShow(msg, xpDrop);
+              player.addBalanceAndShow(msg, drop);
+
+            }
+          }
+
         })
 
+        menu.addCloseButton();
         await menu.run();
-
-        const battle = new Battle(msg, [...players, boss]);
-
-        battle.setBoss(boss);
-
-        await battle.run();
 
         return;
       }
