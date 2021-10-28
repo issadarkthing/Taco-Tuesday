@@ -87,6 +87,7 @@ export default class extends Command {
 
               player.addXPandShow(msg, xpDrop);
               player.addBalanceAndShow(msg, drop);
+              player.doc.save();
 
             }
           }
