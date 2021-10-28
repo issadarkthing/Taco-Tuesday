@@ -9,6 +9,7 @@ import { remove, toNList, validateNumber } from "../utils";
 
 export default class extends Command {
   name = "inventory";
+  description = "show player's inventory";
   aliases = ["i", "inv"];
 
   async exec(msg: Message, args: string[]) {

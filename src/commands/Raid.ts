@@ -10,6 +10,7 @@ import { oneLine } from "common-tags";
 export default class extends Command {
   name = "raid";
   max = 4;
+  description = "fight big boss and earn greater reward";
   block = true;
   timeout = 20; // seconds
 
