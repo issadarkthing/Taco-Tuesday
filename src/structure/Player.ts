@@ -3,15 +3,20 @@ import { Message, User as UserDiscord } from "discord.js";
 import { Player as BasePlayer } from "discordjs-rpg";
 import { bold, currency, inlineCode } from "../utils";
 import { BaseArmor } from "./Armor";
+import { BasePet } from "./Pet";
 
 export class Player extends BasePlayer {
   doc: UserDocument;
+  activePet?: BasePet;
 
   constructor(discordUser: UserDiscord, doc: UserDocument) {
     super(discordUser);
     this.doc = doc;
 
     this.armors.forEach(armor => this.equipArmor(armor));
+    this.activePet = BasePet.all.find(x => x.id === this.doc.activePet);
+
+    this.activePet?.setOwner(this);
   }
 
   /** array of equipped armors */
@@ -25,6 +30,13 @@ export class Player extends BasePlayer {
     return this.doc.armors
       .map(armorID => BaseArmor.all.find(x => x.id === armorID)!);
   }
+
+  /** array of owned pets*/
+  get pets() {
+    return this.doc.pets
+      .map(petID => BasePet.all.find(x => x.id === petID)!);
+  }
+
 
   /** required xp to upgrade to the next level */
   private requiredXP() {
