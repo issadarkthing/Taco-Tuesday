@@ -27,17 +27,10 @@ export default class extends Command {
 
     if (winner.id === player.id) {
 
-      const currLevel = player.doc.level;
-      player.addXP(challenger.xpDrop);
-      player.doc.balance += challenger.drop;
+      player.addXPandShow(msg, challenger.xpDrop);
+      player.addBalanceAndShow(msg, challenger.drop);
       await player.doc.save();
 
-      msg.channel.send(`${player.name} has earned ${bold(challenger.drop)} coins!`);
-      msg.channel.send(`${player.name} has earned ${bold(challenger.xpDrop)} xp!`);
-
-      if (currLevel !== player.doc.level) {
-        msg.channel.send(`${player.name} is now on level ${bold(player.doc.level)}!`);
-      }
     } 
   }
 }
