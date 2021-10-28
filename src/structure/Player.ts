@@ -87,18 +87,11 @@ export class Player extends BasePlayer {
   show() {
     
     const profile = super.show();
-    const armorIndex = 8;
-    const armor = profile.fields.at(armorIndex)!.value;
-    profile.fields.at(armorIndex)!.name = "Balance";
-    profile.fields.at(armorIndex)!.value = `${this.doc.balance} ${currency}`;
-    profile.fields.at(armorIndex)!.inline = true;
 
+    profile.addField("Balance", `${this.doc.balance} ${currency}`, true);
     profile.addField("Bank", `${this.doc.bank} ${currency}`, true);
-
     profile.addField("Level", inlineCode(this.doc.level), true);
     profile.addField("XP", `\`${this.doc.xp}/${this.requiredXP()}\``, true);
-
-    profile.addField("Armor", armor);
 
     return profile;
   }
