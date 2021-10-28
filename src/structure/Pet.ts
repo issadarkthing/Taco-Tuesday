@@ -35,7 +35,7 @@ export abstract class BasePet extends Pet {
     player.doc.pets.push(this.id);
 
     await player.doc.save();
-    msg.channel.send(`Successfully set **${this.name}** as pet`);
+    msg.channel.send(`Successfully bought **${this.name}**!`);
   }
 }
 
