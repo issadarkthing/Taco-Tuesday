@@ -131,7 +131,7 @@ export class ButtonHandler {
       time: this.timeout,
     });
 
-    return new Promise<void>((resolve) => {
+    return new Promise<void>((resolve, reject) => {
 
       const promises: Promise<void>[] = [];
 
@@ -147,9 +147,16 @@ export class ButtonHandler {
 
         if (btn) {
           
-          const promise = btn.callback(button.user, button.customId);
+          try {
 
-          if (promise) promises.push(promise);
+            const promise = btn.callback(button.user, button.customId);
+
+            if (promise) promises.push(promise);
+
+          } catch (err) {
+            collector.emit("end");
+            reject(err);
+          }
         }
 
       })
@@ -164,7 +171,7 @@ export class ButtonHandler {
 
         Promise.allSettled(promises)
           .then(() => resolve())
-          .catch(() => {})
+          .catch(err => reject(err));
       });
     });
   }
