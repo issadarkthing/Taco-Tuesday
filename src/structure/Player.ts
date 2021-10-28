@@ -1,7 +1,7 @@
 import { UserDocument, User } from "../db/User";
-import { User as UserDiscord } from "discord.js";
+import { Message, User as UserDiscord } from "discord.js";
 import { Player as BasePlayer } from "discordjs-rpg";
-import { currency, inlineCode } from "../utils";
+import { bold, currency, inlineCode } from "../utils";
 import { BaseArmor } from "./Armor";
 
 export class Player extends BasePlayer {
@@ -46,6 +46,26 @@ export class Player extends BasePlayer {
       this.doc.level++;
       this.addXP(0);
     }
+  }
+
+  addXPandShow(msg: Message, amount: number) {
+
+    const currLevel = this.doc.level;
+    this.addXP(amount);
+    msg.channel.send(`${this.name} has earned ${bold(amount)} xp!`);
+
+    if (currLevel !== this.doc.level) {
+      msg.channel.send(`${this.name} is now on level ${bold(this.doc.level)}!`);
+    }
+  }
+
+  addBalance(amount: number) {
+    this.doc.balance += amount;
+  }
+
+  addBalanceAndShow(msg: Message, amount: number) {
+    this.addBalance(amount);
+    msg.channel.send(`${this.name} has earned ${bold(amount)} coins!`);
   }
 
   show() {
