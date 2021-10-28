@@ -16,69 +16,74 @@ export default class extends Command {
 
   async exec(msg: Message) {
 
-    const player = await Player.fromUser(msg.author);
-    const challenger = new Challenger(player);
+    try {
+      const player = await Player.fromUser(msg.author);
+      const challenger = new Challenger(player);
 
-    const menu = new ButtonHandler(msg, 
-      oneLine`Starting a dungeon mode. ${this.max} players max.  Starting in
-      ${this.timeout}s`
-    )
-      .setMultiUser(this.max)
-      .setTimeout(this.timeout * 1000);
+      const menu = new ButtonHandler(msg, 
+        oneLine`Starting a dungeon mode. ${this.max} players max.  Starting in
+        ${this.timeout}s`
+      )
+        .setMultiUser(this.max)
+        .setTimeout(this.timeout * 1000);
 
-    const players: Player[] = [];
+        const players: Player[] = [];
 
-    menu.addButton("join", async (user) => {
-      const player = await Player.fromUser(user!);
+        menu.addButton("join", async (user) => {
+          const player = await Player.fromUser(user!);
 
-      if (players.some(x => x.id === player.id)) {
-        msg.channel.send(`${player.name} already joined the party!`);
-        return;
-      }
+          if (players.some(x => x.id === player.id)) {
+            msg.channel.send(`${player.name} already joined the party!`);
+            return;
+          }
 
-      players.push(player);
-      msg.channel.send(`${user!.username} joined the party!`);
-    })
+          players.push(player);
+          msg.channel.send(`${user!.username} joined the party!`);
+        })
 
-    menu.addButton("cancel", (user) => {
-      if (user!.id !== msg.author.id) {
-        msg.channel.send(`Only ${msg.author.username} can cancel the dungeon`);
+      menu.addButton("cancel", (user) => {
+        if (user!.id !== msg.author.id) {
+          msg.channel.send(`Only ${msg.author.username} can cancel the dungeon`);
+        } else {
+          throw new Error("dungeon cancelled");
+        }
+      })
+
+      await menu.run();
+
+      const info = challenger.show().setTitle("Your opponent");
+      await msg.channel.send(`You encountered ${challenger.name}!`);
+
+      const loading = await msg.channel.send({ embeds: [info] });
+      await sleep(10_000);
+      await loading.delete();
+
+      const battle = new Battle(msg, [...players, challenger]);
+
+      battle.setBoss(challenger);
+
+      const winner = await battle.run();
+
+      if (winner.id === challenger.id) {
+
+        msg.channel.send("Mission failed");
+
       } else {
-        throw new Error("dungeon cancelled");
+
+        msg.channel.send(`${challenger.name} has been successfully defeated!`);
+        const { xpDrop, drop } = challenger;
+
+        for (const player of players) {
+
+          player.addXPandShow(msg, xpDrop);
+          player.addBalanceAndShow(msg, drop);
+          player.doc.save();
+
+        }
       }
-    })
 
-    await menu.run();
-
-    const info = challenger.show().setTitle("Your opponent");
-    await msg.channel.send(`You encountered ${challenger.name}!`);
-
-    const loading = await msg.channel.send({ embeds: [info] });
-    await sleep(10_000);
-    await loading.delete();
-
-    const battle = new Battle(msg, [...players, challenger]);
-
-    battle.setBoss(challenger);
-
-    const winner = await battle.run();
-
-    if (winner.id === challenger.id) {
-
-      msg.channel.send("Mission failed");
-
-    } else {
-
-      msg.channel.send(`${challenger.name} has been successfully defeated!`);
-      const { xpDrop, drop } = challenger;
-
-      for (const player of players) {
-
-        player.addXPandShow(msg, xpDrop);
-        player.addBalanceAndShow(msg, drop);
-        player.doc.save();
-
-      }
+    } catch (err) {
+      msg.channel.send((err as Error).message);
     }
   }
 }
