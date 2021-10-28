@@ -10,6 +10,7 @@ export abstract class BaseWeapon extends Weapon {
       new Axe(),
       new Sword(),
       new Dagger(),
+      new Mace(),
     ];
   }
 
@@ -58,4 +59,11 @@ class Dagger extends BaseWeapon {
   name = "Dagger";
   attack = 40;
   price = 3000;
+}
+
+class Mace extends BaseWeapon {
+  id = "mace";
+  name = "Mace";
+  attack = 45;
+  price = 3500;
 }
