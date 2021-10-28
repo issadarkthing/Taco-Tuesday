@@ -5,6 +5,8 @@ import {
   MessageActionRow,
   MessageComponentInteraction,
   User,
+  MessageActionRowComponent,
+  InteractionCollector,
 } from "discord.js";
 import crypto from "crypto";
 
@@ -25,7 +27,9 @@ export class ButtonHandler {
   private buttons: Button[] = [];
   private timeout = 60_000;
   private maxUser = 1;
+  private max = 1;
   private id = this.uuid();
+  private collector?: InteractionCollector<MessageComponentInteraction>;
 
   constructor(msg: Message, embed: MessageEmbed | string, userID?: string) {
     this.msg = msg;
@@ -69,6 +73,12 @@ export class ButtonHandler {
     return this;
   }
 
+  /** set max click (only for single user only!) */
+  setMax(max: number) {
+    this.max = max;
+    return this;
+  }
+
   addButton(label: string, callback: ButtonCallback) {
     const id = this.labelToID(label);
     const button = {
@@ -96,6 +106,10 @@ export class ButtonHandler {
     GLOBAL_BUTTONS.push(button);
 
     return this;
+  }
+
+  close() {
+    this.collector?.emit("end");
   }
 
   async run() {
@@ -126,10 +140,12 @@ export class ButtonHandler {
     };
 
     const collector = this.msg.channel.createMessageComponentCollector({
-      max: this.isMultiUser() ? this.maxUser : 1,
+      max: this.isMultiUser() ? this.maxUser : this.max,
       filter,
       time: this.timeout,
     });
+
+    this.collector = collector;
 
     return new Promise<void>((resolve, reject) => {
 
