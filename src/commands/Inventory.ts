@@ -4,6 +4,7 @@ import { BaseArmor } from "../structure/Armor";
 import { ButtonHandler } from "../structure/ButtonHandler";
 import { BasePet } from "../structure/Pet";
 import { Player } from "../structure/Player";
+import { BaseWeapon } from "../structure/Weapon";
 import { remove, toNList, validateNumber } from "../utils";
 
 export default class extends Command {
@@ -57,6 +58,32 @@ export default class extends Command {
             })
           }
 
+
+        } else if (item instanceof BaseWeapon) {
+
+          if (player.weapons.some(x => x.id === item.id)) {
+            
+            menu.addButton("unequip", () => {
+
+              player.doc.equippedWeapons = remove(item.id, player.doc.equippedWeapons);
+              player.doc.weapons.push(item.id);
+              player.doc.save();
+
+              msg.channel.send(`Successfully unequipped ${item.name}`);
+            })
+
+          } else {
+
+            menu.addButton("equip", () => {
+
+              player.doc.equippedWeapons.push(item.id);
+              player.doc.weapons = remove(item.id, player.doc.weapons);
+              player.doc.save();
+
+              msg.channel.send(`Successfully equipped ${item.name}`);
+
+            })
+          }
 
         } else if (item instanceof BasePet) {
 

@@ -4,6 +4,7 @@ import { BaseArmor } from "../structure/Armor";
 import { Command } from "@jiman24/commandment";
 import { ButtonHandler } from "../structure/ButtonHandler";
 import { BasePet } from "../structure/Pet";
+import { BaseWeapon } from "../structure/Weapon";
 
 export default class extends Command {
   name = "shop";
@@ -16,6 +17,7 @@ export default class extends Command {
       const items = [
         ...BaseArmor.all,
         ...BasePet.all,
+        ...BaseWeapon.all,
       ];
       const [index] = args;
 

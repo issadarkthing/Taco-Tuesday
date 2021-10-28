@@ -4,6 +4,7 @@ import { Player as BasePlayer } from "discordjs-rpg";
 import { bold, currency, inlineCode } from "../utils";
 import { BaseArmor } from "./Armor";
 import { BasePet } from "./Pet";
+import { BaseWeapon } from "./Weapon";
 
 export class Player extends BasePlayer {
   doc: UserDocument;
@@ -14,6 +15,7 @@ export class Player extends BasePlayer {
     this.doc = doc;
 
     this.armors.forEach(armor => this.equipArmor(armor));
+    this.weapons.forEach(weapon => this.equipWeapon(weapon));
     this.activePet = BasePet.all.find(x => x.id === this.doc.activePet);
 
     this.activePet?.setOwner(this);
@@ -29,6 +31,18 @@ export class Player extends BasePlayer {
   get armorInventory() {
     return this.doc.armors
       .map(armorID => BaseArmor.all.find(x => x.id === armorID)!);
+  }
+
+  /** array of equipped weapons */
+  get weapons() {
+    return this.doc.equippedWeapons
+      .map(weaponID => BaseWeapon.all.find(x => x.id === weaponID)!);
+  }
+
+  /** array of weapons in inventory */
+  get weaponInventory() {
+    return this.doc.weapons
+      .map(weaponID => BaseWeapon.all.find(x => x.id === weaponID)!);
   }
 
   /** array of owned pets*/
@@ -100,6 +114,8 @@ export class Player extends BasePlayer {
     return [
       ...this.armors,
       ...this.armorInventory,
+      ...this.weapons,
+      ...this.weaponInventory,
       ...this.pets,
     ];
   }
