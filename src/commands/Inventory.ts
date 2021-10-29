@@ -6,6 +6,7 @@ import { BasePet } from "../structure/Pet";
 import { Player } from "../structure/Player";
 import { BaseWeapon } from "../structure/Weapon";
 import { remove, toNList, validateNumber } from "../utils";
+import { BaseSkill } from "../structure/Skill";
 
 export default class extends Command {
   name = "inventory";
@@ -59,6 +60,30 @@ export default class extends Command {
             })
           }
 
+
+        } else if (item instanceof BaseSkill) {
+
+          if (player.doc.activeSkill === item.id) {
+            
+            menu.addButton("deactivate", () => {
+
+              player.doc.activeSkill = undefined;
+              player.doc.save();
+
+              msg.channel.send(`Successfully deactivated ${item.name}`);
+            })
+
+          } else {
+
+            menu.addButton("activate", () => {
+
+              player.doc.activeSkill = item.id;
+              player.doc.save();
+
+              msg.channel.send(`Successfully activated ${item.name}`);
+
+            })
+          }
 
         } else if (item instanceof BaseWeapon) {
 

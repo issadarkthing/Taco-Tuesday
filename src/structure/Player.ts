@@ -5,6 +5,7 @@ import { bold, currency, inlineCode } from "../utils";
 import { BaseArmor } from "./Armor";
 import { BasePet } from "./Pet";
 import { BaseWeapon } from "./Weapon";
+import { BaseSkill } from "./Skill";
 
 export class Player extends BasePlayer {
   doc: UserDocument;
@@ -18,6 +19,7 @@ export class Player extends BasePlayer {
 
     this.armors.forEach(armor => this.equipArmor(armor));
     this.weapons.forEach(weapon => this.equipWeapon(weapon));
+    this.skill = BaseSkill.all.find(x => x.id === this.doc.activeSkill);
     this.activePet = BasePet.all.find(x => x.id === this.doc.activePet);
 
     this.activePet?.setOwner(this);
@@ -45,6 +47,12 @@ export class Player extends BasePlayer {
   get weaponInventory() {
     return this.doc.weapons
       .map(weaponID => BaseWeapon.all.find(x => x.id === weaponID)!);
+  }
+
+  /** array of owned skills */
+  get skills() {
+    return this.doc.skills
+      .map(skillID => BaseSkill.all.find(x => x.id === skillID)!);
   }
 
   /** array of owned pets*/
@@ -119,6 +127,7 @@ export class Player extends BasePlayer {
       ...this.weapons,
       ...this.weaponInventory,
       ...this.pets,
+      ...this.skills,
     ];
   }
 

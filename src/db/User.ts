@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
   equippedArmors: [String],
   weapons: [String],
   equippedWeapons: [String],
+  skills: [String],
+  activeSkill: String,
   pets: [String],
   activePet: String,
   level: { type: Number, default: 1 },
@@ -51,6 +53,8 @@ export interface UserDocument extends Document {
   equippedArmors: string[];
   weapons: string[];
   equippedWeapons: string[];
+  skills: string[];
+  activeSkill?: string;
   pets: string[];
   activePet?: string;
   spouse: {

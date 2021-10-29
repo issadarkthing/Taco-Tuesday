@@ -5,6 +5,7 @@ import { Command } from "@jiman24/commandment";
 import { ButtonHandler } from "../structure/ButtonHandler";
 import { BasePet } from "../structure/Pet";
 import { BaseWeapon } from "../structure/Weapon";
+import { BaseSkill } from "../structure/Skill";
 import { stripIndents } from "common-tags";
 
 interface Item {
@@ -17,10 +18,13 @@ export default class extends Command {
   description = "buy custom role and rpg stuff";
 
   private toList(items: Item[], start = 1) {
-    return toNList(
+    const list = toNList(
       items.map(x => `${x.name} ${inlineCode(x.price)} ${currency}`),
       start,
     );
+
+    const lastIndex = (items.length - 1) + start;
+    return [list, lastIndex] as const;
   }
 
   async exec(msg: Message, args: string[]) {
@@ -31,6 +35,7 @@ export default class extends Command {
         ...BaseArmor.all,
         ...BaseWeapon.all,
         ...BasePet.all,
+        ...BaseSkill.all,
       ];
       const [arg1] = args;
 
@@ -59,12 +64,10 @@ export default class extends Command {
       }
 
 
-      const armorList = this.toList(BaseArmor.all);
-      const weaponList = this.toList(BaseWeapon.all, BaseArmor.all.length + 1);
-      const petList = this.toList(
-        BasePet.all, 
-        BaseWeapon.all.length + BaseArmor.all.length + 1,
-      );
+      const [armorList, len1] = this.toList(BaseArmor.all);
+      const [weaponList, len2] = this.toList(BaseWeapon.all, len1 + 1);
+      const [petList, len3] = this.toList(BasePet.all, len2 + 1);
+      const [skillList] = this.toList(BaseSkill.all, len3 + 1);
 
       const rpgList = stripIndents`
       **Armor**
@@ -75,6 +78,9 @@ export default class extends Command {
 
       **Pet**
       ${petList}
+
+      **Skill**
+      ${skillList}
       `;
 
       const shop = new MessageEmbed()
