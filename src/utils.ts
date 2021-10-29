@@ -20,6 +20,11 @@ export function formatFloat(num: number) {
   return num.toFixed(1);
 }
 
+
+export function formatPercent(num: number) {
+  return `${(num * 100).toFixed(2)}%`
+}
+
 class InvalidNumber extends Error {}
 
 export function validateNumber(amount: number) {

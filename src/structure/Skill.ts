@@ -1,7 +1,7 @@
 import { Fighter, Skill } from "discordjs-rpg";
 import { Message, MessageEmbed } from "discord.js";
 import { oneLine } from "common-tags";
-import { inlineCode } from "../utils";
+import { formatPercent, inlineCode } from "../utils";
 import { Player } from "./Player";
 
 export abstract class BaseSkill extends Skill {
@@ -11,6 +11,7 @@ export abstract class BaseSkill extends Skill {
     return [
       new Rage(),
       new Heal(),
+      new Defense(),
     ];
   }
 
@@ -85,7 +86,7 @@ class Heal extends BaseSkill {
       .setColor("GREEN")
       .setDescription(
         oneLine`${p1.name} uses **${this.name} Skill** and heals
-        ${inlineCode(healAmount)}hp !`
+        ${inlineCode(healAmount)}HP !`
       )
 
     if (this.imageUrl)
@@ -95,4 +96,34 @@ class Heal extends BaseSkill {
   }
 
   close(_p1: Fighter, _p2: Fighter) {}
+}
+
+
+class Defense extends BaseSkill {
+  name = "Defense";
+  id = "defense";
+  description = "Increase armor for 10% when activated";
+  price = 50_000;
+  interceptRate = 0.25;
+
+  use(p1: Fighter, _p2: Fighter) {
+
+    const armorAmount = p1.armor * 0.1;
+    p1.armor += armorAmount;
+
+    const embed = new MessageEmbed()
+      .setTitle("Skill interception")
+      .setColor("GREEN")
+      .setDescription(
+        oneLine`${p1.name} uses **${this.name} Skill** and increases
+        ${inlineCode(formatPercent(armorAmount))}armor !`
+      )
+
+    if (this.imageUrl)
+      embed.setThumbnail(this.imageUrl);
+
+    return embed;
+  }
+
+  close(p1: Fighter, _p2: Fighter) { }
 }
