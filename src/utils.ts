@@ -16,6 +16,10 @@ export function inlineCode(str: string | number) {
   return `\`\`${str}\`\``;
 }
 
+export function formatFloat(num: number) {
+  return num.toFixed(1);
+}
+
 class InvalidNumber extends Error {}
 
 export function validateNumber(amount: number) {
