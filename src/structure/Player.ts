@@ -14,6 +14,8 @@ export class Player extends BasePlayer {
     super(discordUser);
     this.doc = doc;
 
+    this.hp += (this.doc.level - 1) * 10;
+
     this.armors.forEach(armor => this.equipArmor(armor));
     this.weapons.forEach(weapon => this.equipWeapon(weapon));
     this.activePet = BasePet.all.find(x => x.id === this.doc.activePet);
