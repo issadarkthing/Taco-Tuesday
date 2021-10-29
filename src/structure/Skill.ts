@@ -1,7 +1,7 @@
 import { Fighter, Skill } from "discordjs-rpg";
 import { Message, MessageEmbed } from "discord.js";
 import { oneLine } from "common-tags";
-import { inlineCode, formatFloat } from "../utils";
+import { inlineCode } from "../utils";
 import { Player } from "./Player";
 
 export abstract class BaseSkill extends Skill {
@@ -12,15 +12,6 @@ export abstract class BaseSkill extends Skill {
       new Rage(),
       new Heal(),
     ];
-  }
-
-  show() {
-    const info = super.show();
-
-    const interceptRate = formatFloat(this.interceptRate * 100);
-    info.addField("Intercept Rate", `${inlineCode(interceptRate + "%")}`, true);
-
-    return info;
   }
 
   async buy(msg: Message) {
