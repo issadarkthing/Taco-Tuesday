@@ -2,7 +2,6 @@ import { Command } from "@jiman24/commandment";
 import { Message } from "discord.js";
 import { Player } from "../structure/Player";
 import { validateAmount, validateNumber } from "../utils";
-import { User } from "../db/User";
 
 export default class Bank extends Command {
   name = "bank";
@@ -25,14 +24,6 @@ export default class Bank extends Command {
         player.doc.bank += amount;
         player.doc.balance -= amount;
 
-        const spouse = player.doc.spouse;
-        if (spouse.userID !== undefined) {
-          
-          const spousePlayer = await User.findByUserID(spouse.userID);
-          spousePlayer.bank += amount;
-          spousePlayer.save();
-        }
-
         msg.channel.send(`Successfully banked in ${amount} :taco:`);
 
       } else if (action === "out") {
@@ -41,14 +32,6 @@ export default class Bank extends Command {
 
         player.doc.bank -= amount;
         player.doc.balance += amount;
-
-        const spouse = player.doc.spouse;
-        if (spouse.userID !== undefined) {
-          
-          const spousePlayer = await User.findByUserID(spouse.userID);
-          spousePlayer.bank -= amount;
-          spousePlayer.save();
-        }
 
         msg.channel.send(`Successfully banked out ${amount} :taco:`);
 
